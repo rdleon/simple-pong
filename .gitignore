@@ -1,0 +1,6 @@
+# executable
+netpong
+
+#editor
+*.swp
+tags
