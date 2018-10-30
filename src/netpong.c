@@ -14,6 +14,8 @@
 #define CENTER_X (SCREEN_WIDTH / 2)
 #define CENTER_Y (SCREEN_HEIGHT / 2)
 
+Uint32 FRAMES_PER_SECOND = 60;
+
 void game_init();
 void game_quit();
 
@@ -191,11 +193,21 @@ void check_collisions(SDL_Rect p1_rect, SDL_Rect p2_rect, SDL_Rect *ball_rect, i
     ball_rect->x += (int) *ball_speed;
 }
 
+Uint32 frame_limit(Uint32 last_tick, const Uint32 frame_limit) {
+    Uint32 elapsed_ms = (SDL_GetTicks() - last_tick);
+    if (elapsed_ms < (1000 / frame_limit))
+    {
+        SDL_Delay((1000 / frame_limit) - elapsed_ms);
+    }
+    return SDL_GetTicks();
+}
+
 int main()
 {
     time_t t;
     int ball_speed = 4;
     srand((unsigned) time(&t));
+    Uint32 last_tick = SDL_GetTicks();
 
     Game.init();
 
@@ -249,6 +261,9 @@ int main()
         SDL_RenderCopy(Game.screen.renderer, paddle_texture, NULL, &p1_rect);
         SDL_RenderCopy(Game.screen.renderer, paddle_texture, NULL, &p2_rect);
         SDL_RenderPresent(Game.screen.renderer);
+
+        // Add delay to match frame rate
+        last_tick = frame_limit(last_tick, FRAMES_PER_SECOND);
     }
 
     SDL_DestroyTexture(bg_texture);
