@@ -10,8 +10,8 @@
 #define SCREEN_HEIGHT 600
 #define SCREEN_NAME "NetPong"
 
-#define BASE_BALL_SPEED 4
-#define BASE_PADDLE_SPEED 3
+#define BASE_BALL_SPEED 6
+#define BASE_PADDLE_SPEED 4
 #define CENTER_X (SCREEN_WIDTH / 2)
 #define CENTER_Y (SCREEN_HEIGHT / 2)
 
