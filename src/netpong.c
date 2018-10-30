@@ -124,34 +124,27 @@ SDL_Texture* load_image(const char* path)
     return texture;
 }
 
-void check_events(int *moving)
+void check_events(const Uint8 *keyboardState, int *moving)
 {
     SDL_Event event;
     int paddle_speed = 2;
+    
+    if (keyboardState[SDL_SCANCODE_Q]) {
+        Game.running = SDL_FALSE;
+    }
+
+    *moving = 0;
+    if (keyboardState[SDL_SCANCODE_DOWN]) {
+        *moving = paddle_speed;
+    }
+    else if (keyboardState[SDL_SCANCODE_UP]) {
+        *moving = -paddle_speed;
+    }
+
     while(SDL_PollEvent(&event)) {
         switch (event.type) {
             case SDL_QUIT:
                 Game.running = SDL_FALSE;
-                break;
-            case SDL_KEYDOWN:
-                switch (event.key.keysym.sym) {
-                    case SDLK_UP:
-                        *moving = -1 * (paddle_speed);
-                        break;
-                    case SDLK_DOWN:
-                        *moving = 1 * (paddle_speed);
-                        break;
-                }
-                break;
-            case SDL_KEYUP:
-                switch (event.key.keysym.sym) {
-                    case SDLK_UP:
-                        *moving = 0;
-                        break;
-                    case SDLK_DOWN:
-                        *moving = 0;
-                        break;
-                }
                 break;
         }
     }
@@ -244,15 +237,18 @@ int main()
             break;
     }
 
+    const Uint8 *keyboardState = SDL_GetKeyboardState(NULL);
     while (Game.running) {
-        check_events(&moving);
+        check_events(keyboardState, &moving);
         // Check for collision
         check_collisions(p1_rect, p2_rect, &ball_rect, &ball_speed);
 
-        if (moving < 0 && p1_rect.y > 0) {
-            p1_rect.y += moving;
-        } else if (moving > 0 && p1_rect.y < (int)(Game.screen.height - p1_rect.h)) {
-            p1_rect.y += moving;
+        p1_rect.y += moving;
+
+        if (p1_rect.y < 0) {
+            p1_rect.y = 0;
+        } else if (p1_rect.y > (int)(Game.screen.height - p1_rect.h)) {
+            p1_rect.y = (int)(Game.screen.height - p1_rect.h);
         }
 
         SDL_RenderClear(Game.screen.renderer);
