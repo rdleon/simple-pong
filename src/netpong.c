@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <math.h>
 
 #define SDL_MAIN_HANDLED
 #include "SDL2/SDL.h"
@@ -14,6 +15,8 @@
 #define BASE_PADDLE_SPEED 3
 #define CENTER_X (SCREEN_WIDTH / 2)
 #define CENTER_Y (SCREEN_HEIGHT / 2)
+
+Uint32 FRAMES_PER_SECOND = 60;
 
 void game_init();
 void game_quit();
@@ -195,11 +198,33 @@ void check_collisions(SDL_Rect p1_rect, SDL_Rect p2_rect, SDL_Rect *ball_rect, i
 
 void follow_ball(SDL_Rect *ball, SDL_Rect *paddle)
 {
-    if (ball->y > paddle->y) {
+    int paddle_center = paddle->y + (paddle->h / 2);
+
+    if (ball->y > (paddle_center + 2) && ball->y < (paddle_center - 2)) {
+        // Avoid jitter
+        return;
+    }
+
+    if (ball->y > paddle_center && ball->y > (paddle_center + 2)) {
+        if (paddle->y + paddle->h > SCREEN_HEIGHT) {
+            return;
+        }
         paddle->y += BASE_PADDLE_SPEED;
-    } else if (ball->y < paddle->y) {
+    } else if (round(ball->y) < paddle_center) {
+        if (paddle->y <= 0) {
+            return;
+        }
         paddle->y -= BASE_PADDLE_SPEED;
     }
+}
+
+Uint32 frame_limit(Uint32 last_tick, const Uint32 frame_limit) {
+    Uint32 elapsed_ms = (SDL_GetTicks() - last_tick);
+    if (elapsed_ms < (1000 / frame_limit))
+    {
+        SDL_Delay((1000 / frame_limit) - elapsed_ms);
+    }
+    return SDL_GetTicks();
 }
 
 int main()
@@ -207,6 +232,7 @@ int main()
     time_t t;
     int ball_speed = BASE_BALL_SPEED;
     srand((unsigned) time(&t));
+    Uint32 last_tick = SDL_GetTicks();
 
     Game.init();
 
@@ -262,6 +288,9 @@ int main()
         SDL_RenderCopy(Game.screen.renderer, paddle_texture, NULL, &p1_rect);
         SDL_RenderCopy(Game.screen.renderer, paddle_texture, NULL, &p2_rect);
         SDL_RenderPresent(Game.screen.renderer);
+
+        // Add delay to match frame rate
+        last_tick = frame_limit(last_tick, FRAMES_PER_SECOND);
     }
 
     SDL_DestroyTexture(bg_texture);
