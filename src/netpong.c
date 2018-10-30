@@ -182,9 +182,16 @@ check_collisions(SDL_Rect p1_rect, SDL_Rect p2_rect, SDL_Rect *ball_rect, int *b
         reset_ball(ball_rect, ball_speed, &angle, 1);
     }
 
-    if (c1 || c2) {
+    if (c1){
+        if (*ball_speed < 0) {
+            *ball_speed *= -1;
+        }
         angle = (rand() % 3) - 1;
-        *ball_speed *= -1;
+    } else if (c2) {
+        if (*ball_speed > 0) {
+            *ball_speed *= -1;
+        }
+        angle = (rand() % 3) - 1;
     }
 
     if (ball_rect->y < 0 || ball_rect->y > (int)(Game.screen.height - ball_rect->h)) {
@@ -280,7 +287,7 @@ int main()
     while (Game.running) {
         // moving is the speed and direction of the paddle
         check_events(keyboardState, &moving);
-        // Check for collision
+
         direction = check_collisions(p1_rect, p2_rect, &ball_rect, &ball_speed);
 
         ball_rect.x = direction.x;
