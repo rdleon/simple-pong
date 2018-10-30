@@ -11,6 +11,7 @@
 #define SCREEN_NAME "NetPong"
 
 #define BASE_BALL_SPEED 4
+#define BASE_PADDLE_SPEED 3
 #define CENTER_X (SCREEN_WIDTH / 2)
 #define CENTER_Y (SCREEN_HEIGHT / 2)
 
@@ -134,34 +135,27 @@ SDL_Texture* load_image(const char* path)
     return texture;
 }
 
-void check_events(int *moving)
+void check_events(const Uint8 *keyboardState, int *moving)
 {
     SDL_Event event;
-    int paddle_speed = 2;
+    int paddle_speed = BASE_PADDLE_SPEED;
+
+    if (keyboardState[SDL_SCANCODE_Q]) {
+        Game.running = SDL_FALSE;
+    }
+
+    *moving = 0;
+    if (keyboardState[SDL_SCANCODE_DOWN]) {
+        *moving = paddle_speed;
+    }
+    else if (keyboardState[SDL_SCANCODE_UP]) {
+        *moving = -paddle_speed;
+    }
+
     while(SDL_PollEvent(&event)) {
         switch (event.type) {
             case SDL_QUIT:
                 Game.running = SDL_FALSE;
-                break;
-            case SDL_KEYDOWN:
-                switch (event.key.keysym.sym) {
-                    case SDLK_UP:
-                        *moving = -1 * (paddle_speed);
-                        break;
-                    case SDLK_DOWN:
-                        *moving = 1 * (paddle_speed);
-                        break;
-                }
-                break;
-            case SDL_KEYUP:
-                switch (event.key.keysym.sym) {
-                    case SDLK_UP:
-                        *moving = 0;
-                        break;
-                    case SDLK_DOWN:
-                        *moving = 0;
-                        break;
-                }
                 break;
         }
     }
@@ -332,6 +326,28 @@ void draw_text(char *text, int x, int y, double scaling) {
     }
 }
 
+void follow_ball(SDL_Rect *ball, SDL_Rect *paddle)
+{
+    int paddle_center = paddle->y + (paddle->h / 2);
+
+    if (ball->y > (paddle_center + 2) && ball->y < (paddle_center - 2)) {
+        // Avoid jitter
+        return;
+    }
+
+    if (ball->y > paddle_center && ball->y > (paddle_center + 2)) {
+        if (paddle->y + paddle->h > SCREEN_HEIGHT) {
+            return;
+        }
+        paddle->y += BASE_PADDLE_SPEED;
+    } else if (round(ball->y) < paddle_center) {
+        if (paddle->y <= 0) {
+            return;
+        }
+        paddle->y -= BASE_PADDLE_SPEED;
+    }
+}
+
 Uint32 frame_limit(Uint32 last_tick, const Uint32 frame_limit) {
     Uint32 elapsed_ms = (SDL_GetTicks() - last_tick);
 
@@ -345,7 +361,7 @@ Uint32 frame_limit(Uint32 last_tick, const Uint32 frame_limit) {
 int main()
 {
     time_t t;
-    int ball_speed = 4;
+    int ball_speed = BASE_BALL_SPEED;
     srand((unsigned) time(&t));
     Uint32 last_tick = SDL_GetTicks();
     char buffer[100];
@@ -387,16 +403,21 @@ int main()
             break;
     }
 
+    const Uint8 *keyboardState = SDL_GetKeyboardState(NULL);
     while (Game.running) {
-        check_events(&moving);
+        check_events(keyboardState, &moving);
         // Check for collision
         check_collisions(p1_rect, p2_rect, &ball_rect, &ball_speed);
 
-        if (moving < 0 && p1_rect.y > 0) {
-            p1_rect.y += moving;
-        } else if (moving > 0 && p1_rect.y < (int)(Game.screen.height - p1_rect.h)) {
-            p1_rect.y += moving;
+        p1_rect.y += moving;
+
+        if (p1_rect.y < 0) {
+            p1_rect.y = 0;
+        } else if (p1_rect.y > (int)(Game.screen.height - p1_rect.h)) {
+            p1_rect.y = (int)(Game.screen.height - p1_rect.h);
         }
+
+        follow_ball(&ball_rect, &p2_rect);
 
         SDL_RenderClear(Game.screen.renderer);
         SDL_RenderCopy(Game.screen.renderer, bg_texture, NULL, NULL);
