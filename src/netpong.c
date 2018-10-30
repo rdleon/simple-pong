@@ -11,6 +11,7 @@
 #define SCREEN_NAME "NetPong"
 
 #define BASE_BALL_SPEED 4
+#define BASE_PADDLE_SPEED 3
 #define CENTER_X (SCREEN_WIDTH / 2)
 #define CENTER_Y (SCREEN_HEIGHT / 2)
 
@@ -127,8 +128,8 @@ SDL_Texture* load_image(const char* path)
 void check_events(const Uint8 *keyboardState, int *moving)
 {
     SDL_Event event;
-    int paddle_speed = 2;
-    
+    int paddle_speed = BASE_PADDLE_SPEED;
+
     if (keyboardState[SDL_SCANCODE_Q]) {
         Game.running = SDL_FALSE;
     }
@@ -186,6 +187,28 @@ void check_collisions(SDL_Rect p1_rect, SDL_Rect p2_rect, SDL_Rect *ball_rect, i
     ball_rect->x += (int) *ball_speed;
 }
 
+void follow_ball(SDL_Rect *ball, SDL_Rect *paddle)
+{
+    int paddle_center = paddle->y + (paddle->h / 2);
+
+    if (ball->y > (paddle_center + 2) && ball->y < (paddle_center - 2)) {
+        // Avoid jitter
+        return;
+    }
+
+    if (ball->y > paddle_center && ball->y > (paddle_center + 2)) {
+        if (paddle->y + paddle->h > SCREEN_HEIGHT) {
+            return;
+        }
+        paddle->y += BASE_PADDLE_SPEED;
+    } else if (round(ball->y) < paddle_center) {
+        if (paddle->y <= 0) {
+            return;
+        }
+        paddle->y -= BASE_PADDLE_SPEED;
+    }
+}
+
 Uint32 frame_limit(Uint32 last_tick, const Uint32 frame_limit) {
     Uint32 elapsed_ms = (SDL_GetTicks() - last_tick);
     if (elapsed_ms < (1000 / frame_limit))
@@ -198,7 +221,7 @@ Uint32 frame_limit(Uint32 last_tick, const Uint32 frame_limit) {
 int main()
 {
     time_t t;
-    int ball_speed = 4;
+    int ball_speed = BASE_BALL_SPEED;
     srand((unsigned) time(&t));
     Uint32 last_tick = SDL_GetTicks();
 
@@ -250,6 +273,8 @@ int main()
         } else if (p1_rect.y > (int)(Game.screen.height - p1_rect.h)) {
             p1_rect.y = (int)(Game.screen.height - p1_rect.h);
         }
+
+        follow_ball(&ball_rect, &p2_rect);
 
         SDL_RenderClear(Game.screen.renderer);
         SDL_RenderCopy(Game.screen.renderer, bg_texture, NULL, NULL);
