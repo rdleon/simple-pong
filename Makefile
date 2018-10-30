@@ -10,4 +10,4 @@ netpong: src/netpong.c
 	$(CC) $< $(CFLAGS) $(LDFLAGS) -o $@
 
 clean:
-	@rm $(EXECUTABLES)
+	@rm -f $(EXECUTABLES)
