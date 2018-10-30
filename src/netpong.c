@@ -45,6 +45,11 @@ static struct {
     game_quit
 };
 
+struct direction_vector {
+    int x;
+    int y;
+};
+
 void init_images()
 {
     int flags = IMG_INIT_PNG;
@@ -151,27 +156,30 @@ void check_events(const Uint8 *keyboardState, int *moving)
     }
 }
 
-void check_collisions(SDL_Rect p1_rect, SDL_Rect p2_rect, SDL_Rect *ball_rect, int *ball_speed)
+void reset_ball(SDL_Rect* ball_rect, int* ball_speed, float* angle, int direction)
+{
+    *angle = 0;
+    ball_rect->x = CENTER_X;
+    ball_rect->y = CENTER_Y;
+    *ball_speed = BASE_BALL_SPEED * direction;
+}
+
+struct direction_vector
+check_collisions(SDL_Rect p1_rect, SDL_Rect p2_rect, SDL_Rect *ball_rect, int *ball_speed)
 {
     static float angle = 0;
+    struct direction_vector direction;
 
     SDL_bool c1 = SDL_HasIntersection(ball_rect, &p1_rect);
     SDL_bool c2 = SDL_HasIntersection(ball_rect, &p2_rect);
 
-
-    if (ball_rect->x < 0){
+    if (ball_rect->x < 0) {
         printf("POINT to player 2!\n");
-        ball_rect->x = CENTER_X;
-        ball_rect->y = CENTER_Y;
-        angle = 0;
-        *ball_speed = BASE_BALL_SPEED * -1;
+        reset_ball(ball_rect, ball_speed, &angle, -1);
     } else if(ball_rect->x > (int)(Game.screen.width - ball_rect->w)) {
         // Change for stop win game
         printf("POINT to player 1!\n");
-        ball_rect->x = CENTER_X;
-        ball_rect->y = CENTER_Y;
-        angle = 0;
-        *ball_speed = BASE_BALL_SPEED;
+        reset_ball(ball_rect, ball_speed, &angle, 1);
     }
 
     if (c1 || c2) {
@@ -183,8 +191,10 @@ void check_collisions(SDL_Rect p1_rect, SDL_Rect p2_rect, SDL_Rect *ball_rect, i
         angle *= -1;
     }
 
-    ball_rect->y += (int) *ball_speed * angle;
-    ball_rect->x += (int) *ball_speed;
+    direction.x = ball_rect->x + (int) *ball_speed;
+    direction.y = ball_rect->y + (int) *ball_speed * angle;
+
+    return direction;
 }
 
 void follow_ball(SDL_Rect *ball, SDL_Rect *paddle)
@@ -253,6 +263,8 @@ int main()
 
     int moving = 0;
 
+    struct direction_vector direction;
+
     // randomize the start direction
     switch (rand() % 2) {
         case 0:
@@ -260,11 +272,19 @@ int main()
             break;
     }
 
+    float angle = 0;
+
+    reset_ball(&ball_rect, &ball_speed, &angle, 1);
+
     const Uint8 *keyboardState = SDL_GetKeyboardState(NULL);
     while (Game.running) {
+        // moving is the speed and direction of the paddle
         check_events(keyboardState, &moving);
         // Check for collision
-        check_collisions(p1_rect, p2_rect, &ball_rect, &ball_speed);
+        direction = check_collisions(p1_rect, p2_rect, &ball_rect, &ball_speed);
+
+        ball_rect.x = direction.x;
+        ball_rect.y = direction.y;
 
         p1_rect.y += moving;
 
