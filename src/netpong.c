@@ -135,10 +135,10 @@ void check_events(const Uint8 *keyboardState, int *moving)
 
     *moving = 0;
     if (keyboardState[SDL_SCANCODE_DOWN]) {
-        *moving = -paddle_speed;
+        *moving = paddle_speed;
     }
     else if (keyboardState[SDL_SCANCODE_UP]) {
-        *moving = paddle_speed;
+        *moving = -paddle_speed;
     }
 
     while(SDL_PollEvent(&event)) {
