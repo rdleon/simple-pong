@@ -11,6 +11,7 @@
 #define SCREEN_NAME "NetPong"
 
 #define BASE_BALL_SPEED 4
+#define BASE_PADDLE_SPEED 3
 #define CENTER_X (SCREEN_WIDTH / 2)
 #define CENTER_Y (SCREEN_HEIGHT / 2)
 
@@ -125,7 +126,8 @@ SDL_Texture* load_image(const char* path)
 void check_events(int *moving)
 {
     SDL_Event event;
-    int paddle_speed = 2;
+    int paddle_speed = BASE_PADDLE_SPEED;
+
     while(SDL_PollEvent(&event)) {
         switch (event.type) {
             case SDL_QUIT:
@@ -191,10 +193,19 @@ void check_collisions(SDL_Rect p1_rect, SDL_Rect p2_rect, SDL_Rect *ball_rect, i
     ball_rect->x += (int) *ball_speed;
 }
 
+void follow_ball(SDL_Rect *ball, SDL_Rect *paddle)
+{
+    if (ball->y > paddle->y) {
+        paddle->y += BASE_PADDLE_SPEED;
+    } else if (ball->y < paddle->y) {
+        paddle->y -= BASE_PADDLE_SPEED;
+    }
+}
+
 int main()
 {
     time_t t;
-    int ball_speed = 4;
+    int ball_speed = BASE_BALL_SPEED;
     srand((unsigned) time(&t));
 
     Game.init();
@@ -242,6 +253,8 @@ int main()
         } else if (moving > 0 && p1_rect.y < (int)(Game.screen.height - p1_rect.h)) {
             p1_rect.y += moving;
         }
+
+        follow_ball(&ball_rect, &p2_rect);
 
         SDL_RenderClear(Game.screen.renderer);
         SDL_RenderCopy(Game.screen.renderer, bg_texture, NULL, NULL);
