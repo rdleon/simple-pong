@@ -10,8 +10,8 @@
 #define SCREEN_HEIGHT 600
 #define SCREEN_NAME "NetPong"
 
-#define BASE_BALL_SPEED 4
-#define BASE_PADDLE_SPEED 3
+#define BASE_BALL_SPEED 6
+#define BASE_PADDLE_SPEED 4
 #define CENTER_X (SCREEN_WIDTH / 2)
 #define CENTER_Y (SCREEN_HEIGHT / 2)
 
@@ -21,7 +21,7 @@ const Uint32 FONT_HEIGHT = 16;
 void game_init();
 void game_quit();
 
-static struct 
+static struct
 {
     SDL_Texture *texture;
     SDL_Rect rects[128]; // I will only going to support ASCII
@@ -53,6 +53,11 @@ static struct {
     game_init,
     game_quit,
     0, 0
+};
+
+struct direction_vector {
+    int x;
+    int y;
 };
 
 void init_images()
@@ -161,40 +166,52 @@ void check_events(const Uint8 *keyboardState, int *moving)
     }
 }
 
-void check_collisions(SDL_Rect p1_rect, SDL_Rect p2_rect, SDL_Rect *ball_rect, int *ball_speed)
+void reset_ball(SDL_Rect* ball_rect, int* ball_speed, float* angle, int direction)
+{
+    *angle = 0;
+    ball_rect->x = CENTER_X;
+    ball_rect->y = CENTER_Y;
+    *ball_speed = BASE_BALL_SPEED * direction;
+}
+
+struct direction_vector
+check_collisions(SDL_Rect p1_rect, SDL_Rect p2_rect, SDL_Rect *ball_rect, int *ball_speed)
 {
     static float angle = 0;
+    struct direction_vector direction;
 
     SDL_bool c1 = SDL_HasIntersection(ball_rect, &p1_rect);
     SDL_bool c2 = SDL_HasIntersection(ball_rect, &p2_rect);
 
-
     if (ball_rect->x < 0){
         Game.score2++;
-        ball_rect->x = CENTER_X;
-        ball_rect->y = CENTER_Y;
-        angle = 0;
-        *ball_speed = BASE_BALL_SPEED * -1;
+        reset_ball(ball_rect, ball_speed, &angle, 1);
     } else if(ball_rect->x > (int)(Game.screen.width - ball_rect->w)) {
         // Change for stop win game
         Game.score1++;
-        ball_rect->x = CENTER_X;
-        ball_rect->y = CENTER_Y;
-        angle = 0;
-        *ball_speed = BASE_BALL_SPEED;
+        reset_ball(ball_rect, ball_speed, &angle, -1);
     }
 
-    if (c1 || c2) {
+    if (c1){
+        if (*ball_speed < 0) {
+            *ball_speed *= -1;
+        }
         angle = (rand() % 3) - 1;
-        *ball_speed *= -1;
+    } else if (c2) {
+        if (*ball_speed > 0) {
+            *ball_speed *= -1;
+        }
+        angle = (rand() % 3) - 1;
     }
 
     if (ball_rect->y < 0 || ball_rect->y > (int)(Game.screen.height - ball_rect->h)) {
         angle *= -1;
     }
 
-    ball_rect->y += (int) *ball_speed * angle;
-    ball_rect->x += (int) *ball_speed;
+    direction.x = ball_rect->x + (int) *ball_speed;
+    direction.y = ball_rect->y + (int) *ball_speed * angle;
+
+    return direction;
 }
 
 void load_font() {
@@ -314,7 +331,7 @@ void draw_text(char *text, int x, int y, double scaling) {
     dst_rect.x = x;
     dst_rect.y = y;
     dst_rect.h = FONT_HEIGHT * scaling;
-    
+
     for(Uint32 i = 0; text[i] != '\0'; i++) {
         if(text[i] == ' ') {
             dst_rect.x += (8 * scaling);
@@ -355,6 +372,7 @@ Uint32 frame_limit(Uint32 last_tick, const Uint32 frame_limit) {
     {
         SDL_Delay((1000 / frame_limit) - elapsed_ms);
     }
+
     return SDL_GetTicks();
 }
 
@@ -396,6 +414,8 @@ int main()
 
     int moving = 0;
 
+    struct direction_vector direction;
+
     // randomize the start direction
     switch (rand() % 2) {
         case 0:
@@ -403,11 +423,20 @@ int main()
             break;
     }
 
+    float angle = 0;
+
+    reset_ball(&ball_rect, &ball_speed, &angle, 1);
+
     const Uint8 *keyboardState = SDL_GetKeyboardState(NULL);
+
     while (Game.running) {
+        // moving is the speed and direction of the paddle
         check_events(keyboardState, &moving);
-        // Check for collision
-        check_collisions(p1_rect, p2_rect, &ball_rect, &ball_speed);
+
+        direction = check_collisions(p1_rect, p2_rect, &ball_rect, &ball_speed);
+
+        ball_rect.x = direction.x;
+        ball_rect.y = direction.y;
 
         p1_rect.y += moving;
 
@@ -424,7 +453,7 @@ int main()
         SDL_RenderCopy(Game.screen.renderer, ball_texture, NULL, &ball_rect);
         SDL_RenderCopy(Game.screen.renderer, paddle_texture, NULL, &p1_rect);
         SDL_RenderCopy(Game.screen.renderer, paddle_texture, NULL, &p2_rect);
-        
+
         for(int i = 0; i < 100; i++) buffer[i] = 0;
         sprintf(buffer, "%d", Game.score1);
         draw_text(buffer, SCREEN_WIDTH / 3, 20, 3);
@@ -432,9 +461,8 @@ int main()
         for(int i = 0; i < 100; i++) buffer[i] = 0;
         sprintf(buffer, "%d", Game.score2);
         draw_text(buffer, (SCREEN_WIDTH / 3) * 2, 20, 3);
-        
-        SDL_RenderPresent(Game.screen.renderer);
 
+        SDL_RenderPresent(Game.screen.renderer);
 
         // Add delay to match frame rate
         last_tick = frame_limit(last_tick, FRAMES_PER_SECOND);
