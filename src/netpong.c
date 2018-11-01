@@ -15,6 +15,8 @@
 #define CENTER_X (SCREEN_WIDTH / 2)
 #define CENTER_Y (SCREEN_HEIGHT / 2)
 
+#define MAX_POINTS 5
+
 const Uint32 FRAMES_PER_SECOND = 60;
 const Uint32 FONT_HEIGHT = 16;
 
@@ -466,6 +468,16 @@ int main()
 
         // Add delay to match frame rate
         last_tick = frame_limit(last_tick, FRAMES_PER_SECOND);
+
+        if (Game.score1 >= MAX_POINTS) {
+            printf("Player WINS!\n");
+            break;
+        }
+
+        if (Game.score2 >= MAX_POINTS) {
+            printf("CPU Wins!\n");
+            break;
+        }
     }
 
     SDL_DestroyTexture(bg_texture);
