@@ -18,6 +18,8 @@
 #define CENTER_X (SCREEN_WIDTH / 2)
 #define CENTER_Y (SCREEN_HEIGHT / 2)
 
+#define MAX_TEXT_BUFF_SIZE 100
+
 void game_init();
 void game_quit();
 
@@ -233,7 +235,7 @@ int main()
 
     Game.init();
 
-    load_font(Game.screen.renderer);
+    load_font(Game.screen.renderer, "images/good_neighbors.png", "data/font.txt");
 
     SDL_Texture *bg_texture = load_image(Game.screen.renderer, "images/court.png");
 
@@ -301,7 +303,7 @@ int main()
         SDL_RenderCopy(Game.screen.renderer, paddle_texture, NULL, &p1_rect);
         SDL_RenderCopy(Game.screen.renderer, paddle_texture, NULL, &p2_rect);
 
-        for(int i = 0; i < 100; i++) buffer[i] = 0;
+        memset(buffer, 0, MAX_TEXT_BUFF_SIZE);
         sprintf(buffer, "%d", Game.score1);
         draw_text(Game.screen.renderer, buffer, SCREEN_WIDTH / 3, 20, 3);
 

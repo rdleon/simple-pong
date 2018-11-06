@@ -5,3 +5,4 @@ netpong.dSYM/
 #editor
 *.swp
 tags
+*.o
