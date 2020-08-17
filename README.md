@@ -25,3 +25,9 @@ this it is sent to the one who just scored
     a. Set Menu option for 2 player vs.
     b. Set Options for player 2 controls
 5. Update README
+
+## Version 3
+
+1. Online Server
+2. Server lobby
+3. Online multiplayer
