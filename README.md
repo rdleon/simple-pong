@@ -1,3 +1,12 @@
+# Development requirements
+
+You will need a C compiler SDL2 and SDL2 image extension.
+
+##  To install dependencies in Debian:
+
+`$ apt install build-essential libsdl2-dev libsdl2-image-dev`
+
+
 # Netpong Roadmap
 
 ## Version 1
