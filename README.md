@@ -20,9 +20,9 @@ You will need a C compiler SDL2 and SDL2 image extension.
 5. At the start of the game the ball is randomly served to one side, after
 this it is sent to the one who just scored.
 6. Add a menu
-    a. Start Game
-    b. View Controls
-    c. Exit
+    + Start Game
+    + View Controls
+    + Exit
 7. Update README
 
 ## Version 2
@@ -31,8 +31,8 @@ this it is sent to the one who just scored.
 2. Set the angle of the ball depending of the movement and angle of the paddle
 3. Add sound when hitting and scoring
 4. Add a second player
-    a. Set Menu option for 2 player vs.
-    b. Set Options for player 2 controls
+    + Set Menu option for 2 player vs.
+    + Set Options for player 2 controls
 5. Update README
 
 ## Version 3
