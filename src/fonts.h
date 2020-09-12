@@ -3,7 +3,7 @@
 
 #include "images.h"
 
-static struct
+struct
 {
     SDL_Texture *texture;
     SDL_Rect rects[128]; // I will only going to support ASCII

@@ -6,3 +6,4 @@ netpong.dSYM/
 *.swp
 tags
 *.o
+.vscode/*
