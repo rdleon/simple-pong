@@ -10,14 +10,46 @@ struct game_t Game = {
         NULL,
         NULL
     },
+
     {
         NULL,
         NULL,
         NULL,
     },
+
+    {
+        {
+            CENTER_X,
+            CENTER_Y,
+            32,
+            32
+        },
+        {0, 0},
+        BASE_BALL_SPEED
+    },
+
+    {
+        {
+            32,
+            CENTER_Y - 64,
+            32,
+            128
+        },
+        0
+    },
+
+    {
+        {
+            SCREEN_WIDTH - 64,
+            CENTER_Y - 64,
+            32,
+            128
+        },
+        0
+    },
+
     game_init,
     game_quit,
-    0, 0
 };
 
 void reset_ball(SDL_Rect* ball_rect, int* ball_speed, float* angle, int direction)
@@ -56,44 +88,41 @@ int calculate_angle(SDL_Rect *paddle, SDL_Rect *ball)
     return 0;
 }
 
-struct direction_vector
-check_collisions(SDL_Rect *p1_rect, SDL_Rect *p2_rect, SDL_Rect *ball_rect, int *ball_speed)
+void
+check_collisions(struct player_t* p1, struct player_t* p2, struct ball_t* ball)
 {
     static float angle = 0;
-    struct direction_vector direction;
 
-    SDL_bool c1 = SDL_HasIntersection(ball_rect, p1_rect);
-    SDL_bool c2 = SDL_HasIntersection(ball_rect, p2_rect);
+    SDL_bool c1 = SDL_HasIntersection(&(ball->rect), &(p1->rect));
+    SDL_bool c2 = SDL_HasIntersection(&(ball->rect), &(p2->rect));
 
-    if (ball_rect->x < 0){
-        Game.score2++;
-        reset_ball(ball_rect, ball_speed, &angle, 1);
-    } else if(ball_rect->x > (int)(Game.screen.width - ball_rect->w)) {
+    if (ball->rect.x < 0) {
+        p2->score++;
+        reset_ball(&(ball->rect), &(ball->speed), &angle, 1);
+    } else if(ball->rect.x > (int)(Game.screen.width - ball->rect.w)) {
         // Change for stop win game
-        Game.score1++;
-        reset_ball(ball_rect, ball_speed, &angle, -1);
+        p1->score++;
+        reset_ball(&(ball->rect), &(ball->speed), &angle, -1);
     }
 
     if (c1){
-        if (*ball_speed < 0) {
-            *ball_speed *= -1;
+        if (ball->speed < 0) {
+            ball->speed *= -1;
         }
-        angle = calculate_angle(p1_rect, ball_rect);
+        angle = calculate_angle(&(p1->rect), &(ball->rect));
     } else if (c2) {
-        if (*ball_speed > 0) {
-            *ball_speed *= -1;
+        if (ball->speed > 0) {
+            ball->speed *= -1;
         }
-        angle = calculate_angle(p2_rect, ball_rect);
+        angle = calculate_angle(&(p2->rect), &(ball->rect));
     }
 
-    if (ball_rect->y < 0 || ball_rect->y > (int)(Game.screen.height - ball_rect->h)) {
+    if (ball->rect.y < 0 || ball->rect.y > (int)(Game.screen.height - ball->rect.h)) {
         angle *= -1;
     }
 
-    direction.x = ball_rect->x + (int) *ball_speed;
-    direction.y = ball_rect->y + (int) *ball_speed * angle;
-
-    return direction;
+    ball->rect.x = ball->rect.x + (int) ball->speed;
+    ball->rect.y = ball->rect.y + (int) ball->speed * angle;
 }
 
 void follow_ball(SDL_Rect *ball, SDL_Rect *paddle)
@@ -223,5 +252,3 @@ void game_quit()
     SDL_Quit();
     Game.running = SDL_FALSE;
 }
-
-
