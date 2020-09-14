@@ -1,4 +1,5 @@
 #include "game.h"
+#include "images.h"
 
 struct game_t Game = {
     SDL_FALSE,
@@ -8,6 +9,11 @@ struct game_t Game = {
         SCREEN_NAME,
         NULL,
         NULL
+    },
+    {
+        NULL,
+        NULL,
+        NULL,
     },
     game_init,
     game_quit,
@@ -25,8 +31,7 @@ void init_images()
     }
 }
 
-void
-game_init()
+void game_init()
 {
     int rc = SDL_Init(SDL_INIT_EVERYTHING);
 
@@ -56,12 +61,19 @@ game_init()
         SDL_RENDERER_ACCELERATED|SDL_RENDERER_PRESENTVSYNC
     );
 
-    Game.running = SDL_TRUE;
+    Game.textures.background = load_image(Game.screen.renderer, "images/court.png");
+    Game.textures.ball = load_image(Game.screen.renderer, "images/ball.png");
+    Game.textures.paddle = load_image(Game.screen.renderer, "images/paddle.png");
 
+    Game.running = SDL_TRUE;
 }
 
 void game_quit()
 {
+    SDL_DestroyTexture(Game.textures.background);
+    SDL_DestroyTexture(Game.textures.ball);
+    SDL_DestroyTexture(Game.textures.paddle);
+
     if (Game.screen.renderer) {
         SDL_DestroyRenderer(Game.screen.renderer);
     }

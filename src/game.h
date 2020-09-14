@@ -18,6 +18,7 @@ struct direction_vector {
 
 struct game_t {
     SDL_bool running;
+
     struct {
         unsigned int width;
         unsigned int height;
@@ -25,6 +26,12 @@ struct game_t {
         SDL_Window* window;
         SDL_Renderer* renderer;
     } screen;
+
+    struct {
+        SDL_Texture *background;
+        SDL_Texture *ball;
+        SDL_Texture *paddle;
+    } textures;
 
     void (*init)();
     void (*quit)();

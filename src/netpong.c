@@ -162,9 +162,6 @@ int main()
 
     load_font(Game.screen.renderer, "images/good_neighbors.png", "data/font.txt");
 
-    SDL_Texture *bg_texture = load_image(Game.screen.renderer, "images/court.png");
-
-    SDL_Texture *ball_texture = load_image(Game.screen.renderer, "images/ball.png");
     SDL_Rect ball_rect = {
         CENTER_X,
         CENTER_Y,
@@ -172,13 +169,13 @@ int main()
         32
     };
 
-    SDL_Texture *paddle_texture = load_image(Game.screen.renderer, "images/paddle.png");
     SDL_Rect p1_rect = {
         32,
         CENTER_Y - 64,
         32,
         128
     };
+
     SDL_Rect p2_rect = {
         Game.screen.width - 64,
         CENTER_Y - 64,
@@ -223,10 +220,10 @@ int main()
         follow_ball(&ball_rect, &p2_rect);
 
         SDL_RenderClear(Game.screen.renderer);
-        SDL_RenderCopy(Game.screen.renderer, bg_texture, NULL, NULL);
-        SDL_RenderCopy(Game.screen.renderer, ball_texture, NULL, &ball_rect);
-        SDL_RenderCopy(Game.screen.renderer, paddle_texture, NULL, &p1_rect);
-        SDL_RenderCopy(Game.screen.renderer, paddle_texture, NULL, &p2_rect);
+        SDL_RenderCopy(Game.screen.renderer, Game.textures.background, NULL, NULL);
+        SDL_RenderCopy(Game.screen.renderer, Game.textures.ball, NULL, &ball_rect);
+        SDL_RenderCopy(Game.screen.renderer, Game.textures.paddle, NULL, &p1_rect);
+        SDL_RenderCopy(Game.screen.renderer, Game.textures.paddle, NULL, &p2_rect);
 
         memset(buffer, 0, MAX_TEXT_BUFF_SIZE);
         sprintf(buffer, "%d", Game.score1);
@@ -241,8 +238,6 @@ int main()
         // Add delay to match frame rate
         last_tick = frame_limit(last_tick, FRAMES_PER_SECOND);
     }
-
-    SDL_DestroyTexture(bg_texture);
 
     Game.quit();
 
