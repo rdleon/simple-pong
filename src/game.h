@@ -1,16 +1,22 @@
 #ifndef GAME_H
 #define GAME_H
 
+#include <stdio.h>
+
 #include "SDL2/SDL.h"
 #include "SDL2/SDL_image.h"
 
 #include "config.h"
+
 void game_init();
 void game_quit();
 
-const Uint32 FRAMES_PER_SECOND = 60;
+struct direction_vector {
+    int x;
+    int y;
+};
 
-static struct {
+struct game_t {
     SDL_bool running;
     struct {
         unsigned int width;
@@ -24,18 +30,6 @@ static struct {
     void (*quit)();
     Uint32 score1;
     Uint32 score2;
-} Game = {
-    SDL_FALSE,
-    {
-        SCREEN_WIDTH,
-        SCREEN_HEIGHT,
-        SCREEN_NAME,
-        NULL,
-        NULL
-    },
-    game_init,
-    game_quit,
-    0, 0
 };
 
 #endif
