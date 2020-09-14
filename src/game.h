@@ -8,6 +8,12 @@
 
 #include "config.h"
 
+struct direction_vector
+check_collisions(SDL_Rect*, SDL_Rect*, SDL_Rect*, int*);
+Uint32 frame_limit(Uint32, const Uint32);
+void follow_ball(SDL_Rect*, SDL_Rect*);
+void reset_ball(SDL_Rect*, int*, float*, int);
+void check_events(const Uint8*, int*);
 void game_init();
 void game_quit();
 
