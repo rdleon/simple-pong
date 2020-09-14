@@ -236,9 +236,17 @@ void game_init()
 
 void game_quit()
 {
-    SDL_DestroyTexture(Game.textures.background);
-    SDL_DestroyTexture(Game.textures.ball);
-    SDL_DestroyTexture(Game.textures.paddle);
+    if (Game.textures.background) {
+        SDL_DestroyTexture(Game.textures.background);
+    }
+
+    if (Game.textures.ball) {
+        SDL_DestroyTexture(Game.textures.ball);
+    }
+
+    if (Game.textures.paddle) {
+        SDL_DestroyTexture(Game.textures.paddle);
+    }
 
     if (Game.screen.renderer) {
         SDL_DestroyRenderer(Game.screen.renderer);
@@ -250,5 +258,6 @@ void game_quit()
 
     IMG_Quit();
     SDL_Quit();
+
     Game.running = SDL_FALSE;
 }
