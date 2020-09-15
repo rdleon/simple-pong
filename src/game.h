@@ -24,7 +24,6 @@ struct player_t {
     Uint32 score;
 };
 
-Uint32 frame_limit(Uint32, const Uint32);
 void game_init();
 void game_loop(const Uint8*);
 void game_quit();

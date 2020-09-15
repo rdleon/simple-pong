@@ -1,4 +1,3 @@
-#include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
 
@@ -8,10 +7,21 @@
 
 #include "config.h"
 #include "game.h"
-#include "images.h"
 #include "fonts.h"
 
 extern struct game_t Game;
+
+Uint32 frame_limit(Uint32 last_tick, const Uint32 frame_limit)
+{
+    Uint32 elapsed_ms = (SDL_GetTicks() - last_tick);
+
+    if (elapsed_ms < (1000 / frame_limit))
+    {
+        SDL_Delay((1000 / frame_limit) - elapsed_ms);
+    }
+
+    return SDL_GetTicks();
+}
 
 int main()
 {

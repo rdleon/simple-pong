@@ -149,19 +149,6 @@ void follow_ball(SDL_Rect *ball, SDL_Rect *paddle)
     }
 }
 
-
-Uint32 frame_limit(Uint32 last_tick, const Uint32 frame_limit) {
-    Uint32 elapsed_ms = (SDL_GetTicks() - last_tick);
-
-    if (elapsed_ms < (1000 / frame_limit))
-    {
-        SDL_Delay((1000 / frame_limit) - elapsed_ms);
-    }
-
-    return SDL_GetTicks();
-}
-
-
 void check_events(const Uint8 *keyboardState, int *moving)
 {
     SDL_Event event;
