@@ -24,12 +24,10 @@ struct player_t {
     Uint32 score;
 };
 
-void check_collisions(struct player_t*, struct player_t*, struct ball_t*);
 Uint32 frame_limit(Uint32, const Uint32);
-void follow_ball(SDL_Rect*, SDL_Rect*);
 void reset_ball(SDL_Rect*, int*, float*, int);
-void check_events(const Uint8*, int*);
 void game_init();
+void game_loop(const Uint8*);
 void game_quit();
 
 struct game_t {
@@ -54,6 +52,7 @@ struct game_t {
     struct player_t player2;
 
     void (*init)();
+    void (*loop)(const Uint8*);
     void (*quit)();
 };
 
