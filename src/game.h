@@ -25,7 +25,6 @@ struct player_t {
 };
 
 Uint32 frame_limit(Uint32, const Uint32);
-void reset_ball(SDL_Rect*, int*, float*, int);
 void game_init();
 void game_loop(const Uint8*);
 void game_quit();

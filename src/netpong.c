@@ -23,15 +23,6 @@ int main()
 
     load_font(Game.screen.renderer, "images/good_neighbors.png", "data/font.txt");
 
-    // randomize the start direction
-    if (rand() % 2 == 0) {
-        Game.ball.speed *= -1;
-    }
-
-    float angle = 0;
-
-    reset_ball(&Game.ball.rect, &Game.ball.speed, &angle, 1);
-
     const Uint8 *keyboardState = SDL_GetKeyboardState(NULL);
 
     while (Game.running) {

@@ -240,6 +240,16 @@ void game_init()
     Game.textures.ball = load_image(Game.screen.renderer, "images/ball.png");
     Game.textures.paddle = load_image(Game.screen.renderer, "images/paddle.png");
 
+    // randomize the start direction
+    if (rand() % 2 == 0) {
+        Game.ball.speed *= -1;
+    }
+
+    float angle = 0;
+
+    reset_ball(&Game.ball.rect, &Game.ball.speed, &angle, 1);
+
+
     Game.running = SDL_TRUE;
 }
 
