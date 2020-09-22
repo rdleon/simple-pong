@@ -71,9 +71,9 @@ int calculate_angle(SDL_Rect *paddle, SDL_Rect *ball)
     int third = (paddle->h / 3);
 
     int middle_start = paddle->y + third;
-    int middle_end = paddle->y + third*2;
+    int middle_end = paddle->y + third * 2;
 
-    int paddle_middle = paddle->y + (paddle->h /2); // this breaks paddle in two
+    int paddle_middle = paddle->y + (paddle->h / 2); // this breaks paddle in two
 
     if (ball->y >= middle_start && ball->y <= middle_end) {
         // if collision is in the "middle" segment
