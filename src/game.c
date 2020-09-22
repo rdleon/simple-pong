@@ -31,8 +31,8 @@ struct game_t Game = {
 
     {
         {
-            (SPACING / 2),
-            CENTER_Y - SPACING,
+            SPACING,
+            CENTER_Y - (PADDLE_HEIGHT / 2),
             PADDLE_WIDTH,
             PADDLE_HEIGHT
         },
@@ -41,8 +41,8 @@ struct game_t Game = {
 
     {
         {
-            SCREEN_WIDTH - SPACING,
-            CENTER_Y - SPACING,
+            SCREEN_WIDTH - (SPACING + PADDLE_WIDTH),
+            CENTER_Y - (PADDLE_HEIGHT / 2),
             PADDLE_WIDTH,
             PADDLE_HEIGHT
         },

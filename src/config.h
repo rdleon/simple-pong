@@ -15,7 +15,7 @@
 #define PADDLE_WIDTH 32
 #define PADDLE_HEIGHT 128
 
-#define SPACING 64
+#define SPACING 32
 
 #define FUZZ_PIXELS 2
 
