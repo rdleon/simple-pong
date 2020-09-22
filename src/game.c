@@ -174,13 +174,6 @@ void check_events(const Uint8 *keyboardState, int *moving)
     }
 }
 
-void destroy_texture(SDL_Texture* texture)
-{
-    if (texture) {
-        SDL_DestroyTexture(texture);
-    }
-}
-
 void init_images()
 {
     int flags = IMG_INIT_PNG;
@@ -277,9 +270,9 @@ void game_loop(const Uint8 *keyboardState)
 
 void game_quit()
 {
-    destroy_texture(Game.textures.background);
-    destroy_texture(Game.textures.ball);
-    destroy_texture(Game.textures.paddle);
+    SDL_DestroyTexture(Game.textures.background);
+    SDL_DestroyTexture(Game.textures.ball);
+    SDL_DestroyTexture(Game.textures.paddle);
 
     if (Game.screen.renderer) {
         SDL_DestroyRenderer(Game.screen.renderer);
