@@ -54,7 +54,7 @@ struct game_t Game = {
     game_quit,
 };
 
-void reset_ball(SDL_Rect* ball_rect, int* ball_speed, float* angle, int direction)
+void reset_ball(SDL_Rect* ball_rect, int8_t* ball_speed, float* angle, int direction)
 {
     *angle = 0;
     ball_rect->x = CENTER_X;

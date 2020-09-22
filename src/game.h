@@ -2,6 +2,7 @@
 #define GAME_H
 
 #include <stdio.h>
+#include <stdint.h>
 
 #include "SDL2/SDL.h"
 #include "SDL2/SDL_image.h"
@@ -9,19 +10,19 @@
 #include "config.h"
 
 struct direction_vector {
-    int x;
-    int y;
+    int8_t x;
+    int8_t y;
 };
 
 struct ball_t {
     SDL_Rect rect;
     struct direction_vector direction;
-    int speed;
+    int8_t speed;
 };
 
 struct player_t {
     SDL_Rect rect;
-    Uint32 score;
+    uint8_t score;
 };
 
 void game_init();
