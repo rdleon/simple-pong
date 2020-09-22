@@ -1,0 +1,25 @@
+#ifndef CONFIG_H
+#define CONFIG_H
+
+#define SCREEN_NAME "NetPong"
+#define SCREEN_WIDTH 800
+#define SCREEN_HEIGHT 600
+#define FRAMES_PER_SECOND 60
+
+#define MAX_TEXT_BUFF_SIZE 100
+
+#define BASE_BALL_SPEED 6
+#define BASE_PADDLE_SPEED 4
+
+#define BALL_TEXTURE_WIDTH 32
+#define PADDLE_WIDTH 32
+#define PADDLE_HEIGHT 128
+
+#define SPACING 32
+
+#define FUZZ_PIXELS 2
+
+#define CENTER_X (SCREEN_WIDTH / 2)
+#define CENTER_Y (SCREEN_HEIGHT / 2)
+
+#endif
