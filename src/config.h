@@ -10,6 +10,15 @@
 
 #define BASE_BALL_SPEED 6
 #define BASE_PADDLE_SPEED 4
+
+#define BALL_TEXTURE_WIDTH 32
+#define PADDLE_WIDTH 32
+#define PADDLE_HEIGHT 128
+
+#define SPACING 64
+
+#define FUZZ_PIXELS 2
+
 #define CENTER_X (SCREEN_WIDTH / 2)
 #define CENTER_Y (SCREEN_HEIGHT / 2)
 

@@ -22,8 +22,8 @@ struct game_t Game = {
         {
             CENTER_X,
             CENTER_Y,
-            32,
-            32
+            BALL_TEXTURE_WIDTH,
+            BALL_TEXTURE_WIDTH
         },
         {0, 0},
         BASE_BALL_SPEED
@@ -31,20 +31,20 @@ struct game_t Game = {
 
     {
         {
-            32,
-            CENTER_Y - 64,
-            32,
-            128
+            (SPACING / 2),
+            CENTER_Y - SPACING,
+            PADDLE_WIDTH,
+            PADDLE_HEIGHT
         },
         0
     },
 
     {
         {
-            SCREEN_WIDTH - 64,
-            CENTER_Y - 64,
-            32,
-            128
+            SCREEN_WIDTH - SPACING,
+            CENTER_Y - SPACING,
+            PADDLE_WIDTH,
+            PADDLE_HEIGHT
         },
         0
     },
@@ -90,8 +90,7 @@ int calculate_angle(SDL_Rect *paddle, SDL_Rect *ball)
     return 0;
 }
 
-void
-check_collisions(struct player_t* p1, struct player_t* p2, struct ball_t* ball)
+void check_collisions(struct player_t* p1, struct player_t* p2, struct ball_t* ball)
 {
     static float angle = 0;
 
@@ -131,12 +130,12 @@ void follow_ball(SDL_Rect *ball, SDL_Rect *paddle)
 {
     int paddle_center = paddle->y + (paddle->h / 2);
 
-    if (ball->y > (paddle_center + 2) && ball->y < (paddle_center - 2)) {
+    if (ball->y > (paddle_center + FUZZ_PIXELS) && ball->y < (paddle_center - FUZZ_PIXELS)) {
         // Avoid jitter
         return;
     }
 
-    if (ball->y > paddle_center && ball->y > (paddle_center + 2)) {
+    if (ball->y > paddle_center && ball->y > (paddle_center + FUZZ_PIXELS)) {
         if (paddle->y + paddle->h > SCREEN_HEIGHT) {
             return;
         }
