@@ -14,23 +14,25 @@ struct direction_vector {
     int8_t y;
 };
 
-struct ball_t {
+struct ball {
     SDL_Rect rect;
     struct direction_vector direction;
     int8_t speed;
 };
 
-struct player_t {
+struct player {
     SDL_Rect rect;
     uint8_t score;
 };
 
+enum game_state {Menu, Running, Quit};
+
 void game_init();
-void game_loop(const Uint8*);
+void game_loop(const Uint8 *keyboard_state);
 void game_quit();
 
-struct game_t {
-    SDL_bool running;
+struct game {
+    enum game_state state;
 
     struct {
         unsigned int width;
@@ -46,9 +48,9 @@ struct game_t {
         SDL_Texture *paddle;
     } textures;
 
-    struct ball_t ball;
-    struct player_t player1;
-    struct player_t player2;
+    struct ball ball;
+    struct player player1;
+    struct player player2;
 
     void (*init)();
     void (*loop)(const Uint8*);
