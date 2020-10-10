@@ -6,6 +6,7 @@
 #include "SDL2/SDL_image.h"
 
 #include "config.h"
+#include "menu.h"
 #include "game.h"
 #include "fonts.h"
 
@@ -33,11 +34,21 @@ int main()
 
     load_font(Game.screen.renderer, "images/good_neighbors.png", "data/font.txt");
 
-    const Uint8 *keyboardState = SDL_GetKeyboardState(NULL);
+    const Uint8 *keyboard_state = SDL_GetKeyboardState(NULL);
 
-    while (Game.running) {
+    while (Game.state != Quit) {
         // moving is the speed and direction of the paddle
-        Game.loop(keyboardState);
+        switch (Game.state) {
+        case Menu:
+            menu_loop(keyboard_state);
+            break;
+        case Running:
+            Game.loop(keyboard_state);
+            break;
+        case Quit:
+        default:
+            break;
+        }
 
         SDL_RenderPresent(Game.screen.renderer);
 
@@ -47,5 +58,5 @@ int main()
 
     Game.quit();
 
-    return 0;
+    return EXIT_SUCCESS;
 }

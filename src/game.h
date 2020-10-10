@@ -25,12 +25,14 @@ struct player_t {
     uint8_t score;
 };
 
+enum game_state {Menu, Running, Quit};
+
 void game_init();
 void game_loop(const Uint8*);
 void game_quit();
 
 struct game {
-    SDL_bool running;
+    enum game_state state;
 
     struct {
         unsigned int width;

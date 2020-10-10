@@ -3,7 +3,7 @@
 #include "fonts.h"
 
 struct game Game = {
-    SDL_FALSE,
+    Menu,
     {
         SCREEN_WIDTH,
         SCREEN_HEIGHT,
@@ -154,7 +154,7 @@ void check_events(const Uint8 *keyboardState, int *moving)
     int paddle_speed = BASE_PADDLE_SPEED;
 
     if (keyboardState[SDL_SCANCODE_Q]) {
-        Game.running = SDL_FALSE;
+        Game.state = Quit;
     }
 
     *moving = 0;
@@ -168,7 +168,7 @@ void check_events(const Uint8 *keyboardState, int *moving)
     while(SDL_PollEvent(&event)) {
         switch (event.type) {
             case SDL_QUIT:
-                Game.running = SDL_FALSE;
+                Game.state = Quit;
                 break;
         }
     }
@@ -228,8 +228,7 @@ void game_init()
 
     reset_ball(&Game.ball.rect, &Game.ball.speed, &angle, 1);
 
-
-    Game.running = SDL_TRUE;
+    Game.state = Menu;
 }
 
 void game_loop(const Uint8 *keyboardState)
@@ -285,5 +284,5 @@ void game_quit()
     IMG_Quit();
     SDL_Quit();
 
-    Game.running = SDL_FALSE;
+    Game.state = Quit;
 }
