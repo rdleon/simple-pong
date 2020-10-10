@@ -5,6 +5,7 @@
 
 #include "config.h"
 #include "game.h"
+#include "fonts.h"
 
 void menu_loop(const Uint8* keyboard_state);
 
