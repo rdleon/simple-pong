@@ -90,7 +90,7 @@ int calculate_angle(SDL_Rect *paddle, SDL_Rect *ball)
     return 0;
 }
 
-void check_collisions(struct player_t* p1, struct player_t* p2, struct ball_t* ball)
+void check_collisions(struct player* p1, struct player* p2, struct ball* ball)
 {
     static float angle = 0;
 
@@ -148,20 +148,20 @@ void follow_ball(SDL_Rect *ball, SDL_Rect *paddle)
     }
 }
 
-void check_events(const Uint8 *keyboardState, int *moving)
+void check_events(const Uint8 *keyboard_state, int *moving)
 {
     SDL_Event event;
     int paddle_speed = BASE_PADDLE_SPEED;
 
-    if (keyboardState[SDL_SCANCODE_Q]) {
+    if (keyboard_state[SDL_SCANCODE_Q]) {
         Game.state = Quit;
     }
 
     *moving = 0;
-    if (keyboardState[SDL_SCANCODE_DOWN]) {
+    if (keyboard_state[SDL_SCANCODE_DOWN]) {
         *moving = paddle_speed;
     }
-    else if (keyboardState[SDL_SCANCODE_UP]) {
+    else if (keyboard_state[SDL_SCANCODE_UP]) {
         *moving = -paddle_speed;
     }
 
@@ -231,12 +231,12 @@ void game_init()
     Game.state = Menu;
 }
 
-void game_loop(const Uint8 *keyboardState)
+void game_loop(const Uint8 *keyboard_state)
 {
     int moving = 0;
     char buffer[MAX_TEXT_BUFF_SIZE];
 
-    check_events(keyboardState, &moving);
+    check_events(keyboard_state, &moving);
 
     check_collisions(&Game.player1, &Game.player2, &Game.ball);
 
