@@ -29,7 +29,7 @@ void game_init();
 void game_loop(const Uint8*);
 void game_quit();
 
-struct game_t {
+struct game {
     SDL_bool running;
 
     struct {

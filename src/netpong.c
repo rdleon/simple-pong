@@ -9,7 +9,7 @@
 #include "game.h"
 #include "fonts.h"
 
-extern struct game_t Game;
+extern struct game Game;
 
 Uint32 frame_limit(Uint32 last_tick, const Uint32 frame_limit)
 {

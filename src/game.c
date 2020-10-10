@@ -2,7 +2,7 @@
 #include "images.h"
 #include "fonts.h"
 
-struct game_t Game = {
+struct game Game = {
     SDL_FALSE,
     {
         SCREEN_WIDTH,
