@@ -22,4 +22,6 @@
 #define CENTER_X (SCREEN_WIDTH / 2)
 #define CENTER_Y (SCREEN_HEIGHT / 2)
 
+#define MAX_SCORE 5
+
 #endif

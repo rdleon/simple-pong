@@ -1,13 +1,13 @@
 #ifndef GAME_H
 #define GAME_H
 
+#include "config.h"
+
 #include <stdio.h>
 #include <stdint.h>
 
 #include "SDL2/SDL.h"
 #include "SDL2/SDL_image.h"
-
-#include "config.h"
 
 struct direction_vector {
     int8_t x;
