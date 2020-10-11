@@ -80,13 +80,13 @@ int calculate_angle(SDL_Rect *paddle, SDL_Rect *ball)
     if (ball->y >= middle_start && ball->y <= middle_end) {
         // if collision is in the "middle" segment
         // randomly pick one of the 3 values.
-        return (rand() % 3) - 1;
+        return (rand() % 4) - 2;
     } else if (ball->y > paddle_middle) {
         // collision is in the upper segment
-        return 1;
+        return (rand() % 2) + 1;
     } else {
         // collision is in the lower segment
-        return -1;
+        return -1 * ((rand() % 2) +1);
     }
 
     return 0;
@@ -131,6 +131,21 @@ void check_collisions(struct player* p1, struct player* p2, struct ball* ball)
 void follow_ball(SDL_Rect *ball, SDL_Rect *paddle)
 {
     int paddle_center = paddle->y + (paddle->h / 2);
+    int paddle_speed = BASE_PADDLE_SPEED;
+
+    // If ball is going away, try to go to the middle of the screen
+    if (Game.ball.speed < 0) {
+        if (paddle_center > CENTER_Y) {
+            paddle->y -= paddle_speed / 2;
+        } else if (paddle_center < CENTER_Y) {
+            paddle->y += paddle_speed / 2;
+        }
+        return;
+    }
+
+    if (ball->x < CENTER_X) {
+        return;
+    }
 
     if (ball->y > (paddle_center + FUZZ_PIXELS) && ball->y < (paddle_center - FUZZ_PIXELS)) {
         // Avoid jitter
@@ -155,7 +170,8 @@ void check_events(const Uint8 *keyboard_state, int *moving)
     int paddle_speed = BASE_PADDLE_SPEED;
 
     if (keyboard_state[SDL_SCANCODE_Q]) {
-        Game.state = Quit;
+        Game.state = Menu;
+        SDL_Delay(DEBOUNCE_WAIT);
     }
 
     *moving = 0;
