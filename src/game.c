@@ -242,14 +242,12 @@ void end_game_screen(const Uint8 *keyboard_state)
         sprintf(end_message, "You Lose!");
     }
 
-
     draw_text(Game.screen.renderer, end_message, SCREEN_WIDTH / 4, CENTER_Y - 50, 7);
 
     if (keyboard_state[SDL_SCANCODE_RETURN]) {
         game_reset();
         Game.state = Menu;
-        // Debounce delay
-        SDL_Delay(500);
+        SDL_Delay(DEBOUNCE_WAIT);
     }
 }
 

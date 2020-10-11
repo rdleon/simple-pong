@@ -6,6 +6,9 @@
 #define SCREEN_HEIGHT 600
 #define FRAMES_PER_SECOND 60
 
+/* Millisecons to wait for debouncing keypresses */
+#define DEBOUNCE_WAIT 500
+
 #define MAX_TEXT_BUFF_SIZE 100
 
 #define BASE_BALL_SPEED 6
