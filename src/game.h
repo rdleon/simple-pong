@@ -52,6 +52,8 @@ struct game {
     struct player player1;
     struct player player2;
 
+    unsigned int max_score;
+
     void (*init)();
     void (*loop)(const Uint8*);
     void (*quit)();

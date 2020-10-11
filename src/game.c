@@ -49,6 +49,8 @@ struct game Game = {
         0
     },
 
+    DEFAULT_MAX_SCORE,
+
     game_init,
     game_loop,
     game_quit,
@@ -264,7 +266,7 @@ void game_loop(const Uint8 *keyboard_state)
 
     check_events(keyboard_state, &moving);
 
-    if (Game.player1.score >= MAX_SCORE || Game.player2.score >= MAX_SCORE) {
+    if (Game.player1.score >= Game.max_score || Game.player2.score >= Game.max_score) {
         end_game_screen(keyboard_state);
         return;
     }

@@ -29,6 +29,6 @@
 #define FINAL_TEXT_X SCREEN_WIDTH / 4
 #define FINAL_TEXT_Y CENTER_Y - 50
 
-#define MAX_SCORE 5
+#define DEFAULT_MAX_SCORE 5
 
 #endif
