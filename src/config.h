@@ -25,6 +25,10 @@
 #define CENTER_X (SCREEN_WIDTH / 2)
 #define CENTER_Y (SCREEN_HEIGHT / 2)
 
+#define FINAL_TEXT_SCALE 7
+#define FINAL_TEXT_X SCREEN_WIDTH / 4
+#define FINAL_TEXT_Y CENTER_Y - 50
+
 #define MAX_SCORE 5
 
 #endif

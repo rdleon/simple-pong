@@ -242,7 +242,13 @@ void end_game_screen(const Uint8 *keyboard_state)
         sprintf(end_message, "You Lose!");
     }
 
-    draw_text(Game.screen.renderer, end_message, SCREEN_WIDTH / 4, CENTER_Y - 50, 7);
+    draw_text(
+        Game.screen.renderer,
+        end_message,
+        FINAL_TEXT_X,
+        FINAL_TEXT_Y,
+        FINAL_TEXT_SCALE
+    );
 
     if (keyboard_state[SDL_SCANCODE_RETURN]) {
         game_reset();
