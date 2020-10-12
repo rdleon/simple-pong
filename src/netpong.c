@@ -1,14 +1,15 @@
-#include <stdlib.h>
-#include <time.h>
-
-#define SDL_MAIN_HANDLED
-#include "SDL2/SDL.h"
-#include "SDL2/SDL_image.h"
-
 #include "config.h"
 #include "menu.h"
 #include "game.h"
 #include "fonts.h"
+
+#include <stdlib.h>
+#include <time.h>
+
+#include "SDL2/SDL.h"
+#include "SDL2/SDL_image.h"
+
+#define SDL_MAIN_HANDLED
 
 extern struct game Game;
 
@@ -29,6 +30,7 @@ int main()
     time_t t;
     srand((unsigned) time(&t));
     Uint32 last_tick = SDL_GetTicks();
+    SDL_Event event;
 
     game_init();
 
@@ -51,6 +53,15 @@ int main()
         }
 
         SDL_RenderPresent(Game.screen.renderer);
+
+        while(SDL_PollEvent(&event)) {
+            switch (event.type) {
+                case SDL_QUIT:
+                    Game.state = Quit;
+                    break;
+            }
+        }
+
 
         // Add delay to match frame rate
         last_tick = frame_limit(last_tick, FRAMES_PER_SECOND);

@@ -4,24 +4,15 @@ extern struct game Game;
 
 void menu_loop(const Uint8 *keyboard_state)
 {
-    SDL_Event event;
-
     SDL_RenderClear(Game.screen.renderer);
     SDL_RenderCopy(Game.screen.renderer, Game.textures.background, NULL, NULL);
-    draw_text(Game.screen.renderer, "NETPONG", SCREEN_WIDTH / 3, 30, 5);
+
+    draw_text(Game.screen.renderer, "NetPong", SCREEN_WIDTH / 3, 30, 5);
     draw_text(Game.screen.renderer, "Press ENTER to start", SCREEN_WIDTH / 3, 260, 2);
 
     if (keyboard_state[SDL_SCANCODE_RETURN]) {
         Game.state = Running;
     } else if (keyboard_state[SDL_SCANCODE_Q]) {
         Game.state = Quit;
-    }
-
-    while(SDL_PollEvent(&event)) {
-        switch (event.type) {
-            case SDL_QUIT:
-                Game.state = Quit;
-                break;
-        }
     }
 }

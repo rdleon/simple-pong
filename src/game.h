@@ -1,13 +1,13 @@
 #ifndef GAME_H
 #define GAME_H
 
+#include "config.h"
+
 #include <stdio.h>
 #include <stdint.h>
 
 #include "SDL2/SDL.h"
 #include "SDL2/SDL_image.h"
-
-#include "config.h"
 
 struct direction_vector {
     int8_t x;
@@ -51,6 +51,8 @@ struct game {
     struct ball ball;
     struct player player1;
     struct player player2;
+
+    unsigned int max_score;
 
     void (*init)();
     void (*loop)(const Uint8*);

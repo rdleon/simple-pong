@@ -49,6 +49,8 @@ struct game Game = {
         0
     },
 
+    DEFAULT_MAX_SCORE,
+
     game_init,
     game_loop,
     game_quit,
@@ -78,13 +80,13 @@ int calculate_angle(SDL_Rect *paddle, SDL_Rect *ball)
     if (ball->y >= middle_start && ball->y <= middle_end) {
         // if collision is in the "middle" segment
         // randomly pick one of the 3 values.
-        return (rand() % 3) - 1;
+        return (rand() % 4) - 2;
     } else if (ball->y > paddle_middle) {
         // collision is in the upper segment
-        return 1;
+        return (rand() % 2) + 1;
     } else {
         // collision is in the lower segment
-        return -1;
+        return -1 * ((rand() % 2) +1);
     }
 
     return 0;
@@ -129,6 +131,21 @@ void check_collisions(struct player* p1, struct player* p2, struct ball* ball)
 void follow_ball(SDL_Rect *ball, SDL_Rect *paddle)
 {
     int paddle_center = paddle->y + (paddle->h / 2);
+    int paddle_speed = BASE_PADDLE_SPEED;
+
+    // If ball is going away, try to go to the middle of the screen
+    if (Game.ball.speed < 0) {
+        if (paddle_center > CENTER_Y) {
+            paddle->y -= paddle_speed / 2;
+        } else if (paddle_center < CENTER_Y) {
+            paddle->y += paddle_speed / 2;
+        }
+        return;
+    }
+
+    if (ball->x < CENTER_X) {
+        return;
+    }
 
     if (ball->y > (paddle_center + FUZZ_PIXELS) && ball->y < (paddle_center - FUZZ_PIXELS)) {
         // Avoid jitter
@@ -150,11 +167,11 @@ void follow_ball(SDL_Rect *ball, SDL_Rect *paddle)
 
 void check_events(const Uint8 *keyboard_state, int *moving)
 {
-    SDL_Event event;
     int paddle_speed = BASE_PADDLE_SPEED;
 
     if (keyboard_state[SDL_SCANCODE_Q]) {
-        Game.state = Quit;
+        Game.state = Menu;
+        SDL_Delay(DEBOUNCE_WAIT);
     }
 
     *moving = 0;
@@ -163,14 +180,6 @@ void check_events(const Uint8 *keyboard_state, int *moving)
     }
     else if (keyboard_state[SDL_SCANCODE_UP]) {
         *moving = -paddle_speed;
-    }
-
-    while(SDL_PollEvent(&event)) {
-        switch (event.type) {
-            case SDL_QUIT:
-                Game.state = Quit;
-                break;
-        }
     }
 }
 
@@ -183,6 +192,20 @@ void init_images()
         fprintf(stderr, "SDL error -> %s\n", IMG_GetError());
         exit(1);
     }
+}
+
+void game_reset()
+{
+    Game.player1.rect.y = Game.player2.rect.y = CENTER_Y - (PADDLE_HEIGHT / 2);
+    Game.player1.score = Game.player2.score = 0;
+    // randomize the start direction
+    if (rand() % 2 == 0) {
+        Game.ball.speed *= -1;
+    }
+
+    float angle = 0;
+
+    reset_ball(&Game.ball.rect, &Game.ball.speed, &angle, 1);
 }
 
 void game_init()
@@ -219,16 +242,37 @@ void game_init()
     Game.textures.ball = load_image(Game.screen.renderer, "images/ball.png");
     Game.textures.paddle = load_image(Game.screen.renderer, "images/paddle.png");
 
-    // randomize the start direction
-    if (rand() % 2 == 0) {
-        Game.ball.speed *= -1;
-    }
-
-    float angle = 0;
-
-    reset_ball(&Game.ball.rect, &Game.ball.speed, &angle, 1);
+    game_reset();
 
     Game.state = Menu;
+}
+
+void end_game_screen(const Uint8 *keyboard_state)
+{
+    char end_message[MAX_TEXT_BUFF_SIZE];
+
+    SDL_RenderClear(Game.screen.renderer);
+    SDL_RenderCopy(Game.screen.renderer, Game.textures.background, NULL, NULL);
+
+    if (Game.player1.score > Game.player2.score) {
+        sprintf(end_message, "You Win!");
+    } else {
+        sprintf(end_message, "You Lose!");
+    }
+
+    draw_text(
+        Game.screen.renderer,
+        end_message,
+        FINAL_TEXT_X,
+        FINAL_TEXT_Y,
+        FINAL_TEXT_SCALE
+    );
+
+    if (keyboard_state[SDL_SCANCODE_RETURN]) {
+        game_reset();
+        Game.state = Menu;
+        SDL_Delay(DEBOUNCE_WAIT);
+    }
 }
 
 void game_loop(const Uint8 *keyboard_state)
@@ -237,6 +281,11 @@ void game_loop(const Uint8 *keyboard_state)
     char buffer[MAX_TEXT_BUFF_SIZE];
 
     check_events(keyboard_state, &moving);
+
+    if (Game.player1.score >= Game.max_score || Game.player2.score >= Game.max_score) {
+        end_game_screen(keyboard_state);
+        return;
+    }
 
     check_collisions(&Game.player1, &Game.player2, &Game.ball);
 

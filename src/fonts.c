@@ -2,6 +2,8 @@
 
 #define FONT_HEIGHT 16;
 
+struct font Font;
+
 void load_font(SDL_Renderer* renderer, const char *img_filename, const char *data_filename) {
     Font.texture = load_image(renderer, img_filename);
     for(Uint32 i = 0; i < 128; i++) {
