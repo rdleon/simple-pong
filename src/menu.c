@@ -20,15 +20,6 @@ void menu_loop(const Uint8 *keyboard_state)
     enum menu_option down_action = MenuControls;
     enum game_state enter_action = Running;
 
-    SDL_RenderClear(Game.screen.renderer);
-    SDL_RenderCopy(Game.screen.renderer, Game.textures.background, NULL, NULL);
-
-    draw_text(Game.screen.renderer, "NetPong", SCREEN_WIDTH / 3, 30, 5);
-
-    draw_text(Game.screen.renderer, "Start", option_align, start_y, MENU_OPTION_TEXT_SCALE);
-    draw_text(Game.screen.renderer, "Controls", option_align, controls_y, MENU_OPTION_TEXT_SCALE);
-    draw_text(Game.screen.renderer, "Quit", option_align, quit_y, MENU_OPTION_TEXT_SCALE);
-
     switch (option) {
     case MenuStart:
         cursor_y = start_y;
@@ -52,6 +43,16 @@ void menu_loop(const Uint8 *keyboard_state)
 
     Game.cursor.x = option_align - 40;
     Game.cursor.y = cursor_y;
+
+    SDL_RenderClear(Game.screen.renderer);
+    SDL_RenderCopy(Game.screen.renderer, Game.textures.background, NULL, NULL);
+
+    draw_text(Game.screen.renderer, "NetPong", SCREEN_WIDTH / 3, 30, 5);
+
+    draw_text(Game.screen.renderer, "Start", option_align, start_y, MENU_OPTION_TEXT_SCALE);
+    draw_text(Game.screen.renderer, "Controls", option_align, controls_y, MENU_OPTION_TEXT_SCALE);
+    draw_text(Game.screen.renderer, "Quit", option_align, quit_y, MENU_OPTION_TEXT_SCALE);
+
     SDL_RenderCopy(Game.screen.renderer, Game.textures.ball, NULL, &Game.cursor);
 
     if (keyboard_state[SDL_SCANCODE_RETURN]) {
