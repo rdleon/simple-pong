@@ -3,7 +3,8 @@
 
 extern struct game Game;
 
-void menu_loop(const Uint8 *keyboard_state) {
+void menu_loop(const Uint8 *keyboard_state)
+{
     const int option_position = 260;
     const int option_spacing = 40;
     const int option_align = (SCREEN_WIDTH / 4) + option_spacing;
