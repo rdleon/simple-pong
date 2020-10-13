@@ -7,7 +7,7 @@
 #define FRAMES_PER_SECOND 60
 
 /* Millisecons to wait for debouncing keypresses */
-#define DEBOUNCE_WAIT 500
+#define DEBOUNCE_WAIT 200
 
 #define MAX_TEXT_BUFF_SIZE 100
 
@@ -28,6 +28,8 @@
 #define FINAL_TEXT_SCALE 7
 #define FINAL_TEXT_X SCREEN_WIDTH / 4
 #define FINAL_TEXT_Y CENTER_Y - 50
+
+#define MENU_OPTION_TEXT_SCALE 2
 
 #define DEFAULT_MAX_SCORE 5
 

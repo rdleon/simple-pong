@@ -48,6 +48,7 @@ struct game {
         SDL_Texture *paddle;
     } textures;
 
+    SDL_Rect cursor;
     struct ball ball;
     struct player player1;
     struct player player2;

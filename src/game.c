@@ -18,6 +18,15 @@ struct game Game = {
         NULL,
     },
 
+    // Cursor
+    {
+        CENTER_X,
+        CENTER_Y,
+        BALL_TEXTURE_WIDTH,
+        BALL_TEXTURE_WIDTH
+    },
+
+    // Ball
     {
         {
             CENTER_X,
@@ -29,6 +38,7 @@ struct game Game = {
         BASE_BALL_SPEED
     },
 
+    // Player 1
     {
         {
             SPACING,
@@ -39,6 +49,7 @@ struct game Game = {
         0
     },
 
+    // Player 2
     {
         {
             SCREEN_WIDTH - (SPACING + PADDLE_WIDTH),
