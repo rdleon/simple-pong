@@ -42,7 +42,10 @@ int main()
         // moving is the speed and direction of the paddle
         switch (Game.state) {
         case Menu:
-            menu_loop(keyboard_state);
+            menu_main_loop(keyboard_state);
+            break;
+        case Controls:
+            menu_controls_loop(keyboard_state);
             break;
         case Running:
             game_loop(keyboard_state);

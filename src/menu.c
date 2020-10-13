@@ -3,24 +3,38 @@
 
 extern struct game Game;
 
-void menu_loop(const Uint8 *keyboard_state)
+void menu_controls_loop(const Uint8 *keyboard_state)
 {
+    SDL_RenderClear(Game.screen.renderer);
+    SDL_RenderCopy(Game.screen.renderer, Game.textures.background, NULL, NULL);
+
+    draw_text(Game.screen.renderer, "Controls", SCREEN_WIDTH / 3, 30, 5);
+
+    if (keyboard_state[SDL_SCANCODE_RETURN]) {
+        Game.state = Menu;
+        SDL_Delay(DEBOUNCE_WAIT);
+    }
+}
+
+void menu_main_loop(const Uint8 *keyboard_state)
+{
+    static enum menu_option selected = MenuStart;
+
     const int option_position = 260;
     const int option_spacing = 40;
     const int option_align = (SCREEN_WIDTH / 4) + option_spacing;
 
-    static enum menu_option option = MenuStart;
+    const int start_y = option_position;
+    const int controls_y = option_position + option_spacing;
+    const int quit_y = option_position + (2 * option_spacing);
 
-    int start_y = option_position;
-    int controls_y = option_position + option_spacing;
-    int quit_y = option_position + (2 * option_spacing);
     int cursor_y = option_position;
 
     enum menu_option up_action = MenuStart;
     enum menu_option down_action = MenuControls;
     enum game_state enter_action = Running;
 
-    switch (option) {
+    switch (selected) {
     case MenuStart:
         cursor_y = start_y;
         up_action = MenuStart;
@@ -31,7 +45,7 @@ void menu_loop(const Uint8 *keyboard_state)
         cursor_y = controls_y;
         up_action = MenuStart;
         down_action = MenuQuit;
-        enter_action = Running;
+        enter_action = Controls;
         break;
     case MenuQuit:
         cursor_y = quit_y;
@@ -59,10 +73,10 @@ void menu_loop(const Uint8 *keyboard_state)
         Game.state = enter_action;
         SDL_Delay(DEBOUNCE_WAIT);
     } else if (keyboard_state[SDL_SCANCODE_DOWN]) {
-        option = down_action;
+        selected = down_action;
         SDL_Delay(DEBOUNCE_WAIT);
     } else if (keyboard_state[SDL_SCANCODE_UP]) {
-        option = up_action;
+        selected = up_action;
         SDL_Delay(DEBOUNCE_WAIT);
     }
 }
