@@ -50,10 +50,6 @@ struct game Game = {
     },
 
     DEFAULT_MAX_SCORE,
-
-    game_init,
-    game_loop,
-    game_quit,
 };
 
 void reset_ball(SDL_Rect* ball_rect, int8_t* ball_speed, float* angle, int direction)
