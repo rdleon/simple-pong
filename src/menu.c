@@ -10,6 +10,9 @@ void menu_controls_loop(const Uint8 *keyboard_state)
 
     draw_text(Game.screen.renderer, "Controls", SCREEN_WIDTH / 3, 30, 5);
 
+    draw_text(Game.screen.renderer, "UP: Move up", SCREEN_WIDTH / 4, 160, 3);
+    draw_text(Game.screen.renderer, "DOWN: Move down", SCREEN_WIDTH / 4, 230, 3);
+
     if (keyboard_state[SDL_SCANCODE_RETURN]) {
         Game.state = Menu;
         SDL_Delay(DEBOUNCE_WAIT);
