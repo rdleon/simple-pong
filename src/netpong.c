@@ -45,7 +45,7 @@ int main()
             menu_loop(keyboard_state);
             break;
         case Running:
-            Game.loop(keyboard_state);
+            game_loop(keyboard_state);
             break;
         case Quit:
         default:
@@ -67,7 +67,7 @@ int main()
         last_tick = frame_limit(last_tick, FRAMES_PER_SECOND);
     }
 
-    Game.quit();
+    game_quit();
 
     return EXIT_SUCCESS;
 }

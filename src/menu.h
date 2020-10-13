@@ -7,6 +7,8 @@
 
 #include "SDL2/SDL.h"
 
+enum menu_option {MenuStart, MenuControls, MenuQuit};
+
 void menu_loop(const Uint8* keyboard_state);
 
 #endif
