@@ -127,13 +127,17 @@ void check_collisions(struct player* p1, struct player* p2, struct ball* ball)
 
     if (c1){
         if (ball->speed < 0) {
-            ball->speed -= 1;
+            if (ball->speed > INT8_MIN + 1) {
+                ball->speed -= 1;
+            }
             ball->speed *= -1;
         }
         angle = calculate_angle(&(p1->rect), &(ball->rect));
     } else if (c2) {
         if (ball->speed > 0) {
-            ball->speed += 1;
+            if (ball->speed < INT8_MAX - 1) {
+                ball->speed += 1;
+            }
             ball->speed *= -1;
         }
         angle = calculate_angle(&(p2->rect), &(ball->rect));
