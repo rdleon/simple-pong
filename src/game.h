@@ -25,7 +25,7 @@ struct player {
     uint8_t score;
 };
 
-enum game_state {Menu, Running, Quit};
+enum game_state {Menu, Controls, Running, Quit};
 
 void game_init();
 void game_loop(const Uint8 *keyboard_state);
