@@ -5,9 +5,18 @@
 
 #include <stdio.h>
 #include <stdint.h>
+#include <math.h>
 
 #include "SDL2/SDL.h"
 #include "SDL2/SDL_image.h"
+
+#ifndef M_PI
+#define M_PI 3.14159
+#endif
+
+#ifndef M_PI_2
+#define M_PI_2 1.5708
+#endif
 
 struct direction_vector {
     int8_t x;
