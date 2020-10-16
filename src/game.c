@@ -63,7 +63,12 @@ struct game Game = {
     DEFAULT_MAX_SCORE,
 };
 
-void reset_ball(SDL_Rect* ball_rect, int8_t* ball_speed, float* angle, int direction)
+double rand_range(double min, double max)
+{
+    return min + (rand() / ( RAND_MAX / (max - min) ) ) ;
+}
+
+void reset_ball(SDL_Rect* ball_rect, int8_t* ball_speed, double* angle, int direction)
 {
     *angle = 0;
     ball_rect->x = CENTER_X;
@@ -77,6 +82,7 @@ int calculate_angle(SDL_Rect *paddle, SDL_Rect *ball)
     // this breaks the paddle into 3 segments (up, middle, down)
     // and changes the angle depending on where the ball collisioned
     // if the ball hits the middle segment, it randomly selects the angle.
+    const double min_angle = M_PI/180;
     int third = (paddle->h / 3);
 
     int middle_start = paddle->y + third;
@@ -86,14 +92,18 @@ int calculate_angle(SDL_Rect *paddle, SDL_Rect *ball)
 
     if (ball->y >= middle_start && ball->y <= middle_end) {
         // if collision is in the "middle" segment
-        // randomly pick one of the 3 values.
-        return (rand() % 4) - 2;
+        // return an angle in radians between 0 and Pi/2 or 3*Pi/2 and 2*Pi
+        if (rand() % 2) {
+            return rand_range(min_angle, M_PI_2);
+        }
+
+        return rand_range((3 * M_PI_2) + min_angle, 2 * M_PI);
     } else if (ball->y > paddle_middle) {
         // collision is in the upper segment
-        return (rand() % 2) + 1;
+        return rand_range(min_angle, M_PI_2);
     } else {
         // collision is in the lower segment
-        return -1 * ((rand() % 2) +1);
+        return rand_range((3 * M_PI_2) + min_angle, 2 * M_PI);
     }
 
     return 0;
@@ -101,7 +111,7 @@ int calculate_angle(SDL_Rect *paddle, SDL_Rect *ball)
 
 void check_collisions(struct player* p1, struct player* p2, struct ball* ball)
 {
-    static float angle = 0;
+    static double angle = 0;
 
     SDL_bool c1 = SDL_HasIntersection(&(ball->rect), &(p1->rect));
     SDL_bool c2 = SDL_HasIntersection(&(ball->rect), &(p2->rect));
@@ -117,11 +127,17 @@ void check_collisions(struct player* p1, struct player* p2, struct ball* ball)
 
     if (c1){
         if (ball->speed < 0) {
+            if (ball->speed > INT8_MIN + 1) {
+                ball->speed -= 1;
+            }
             ball->speed *= -1;
         }
         angle = calculate_angle(&(p1->rect), &(ball->rect));
     } else if (c2) {
         if (ball->speed > 0) {
+            if (ball->speed < INT8_MAX - 1) {
+                ball->speed += 1;
+            }
             ball->speed *= -1;
         }
         angle = calculate_angle(&(p2->rect), &(ball->rect));
@@ -131,8 +147,12 @@ void check_collisions(struct player* p1, struct player* p2, struct ball* ball)
         angle *= -1;
     }
 
-    ball->rect.x = ball->rect.x + (int) ball->speed;
-    ball->rect.y = ball->rect.y + (int) ball->speed * angle;
+    if (angle == 0) {
+        ball->rect.x += ball->speed;
+    } else {
+        ball->rect.x += (int) round(ball->speed * cos(angle));
+        ball->rect.y += (int) round(ball->speed * sin(angle));
+    }
 }
 
 void follow_ball(SDL_Rect *ball, SDL_Rect *paddle)
@@ -210,7 +230,7 @@ void game_reset()
         Game.ball.speed *= -1;
     }
 
-    float angle = 0;
+    double angle = 0;
 
     reset_ball(&Game.ball.rect, &Game.ball.speed, &angle, 1);
 }
