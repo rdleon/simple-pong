@@ -65,7 +65,7 @@ void menu_main_loop(const Uint8 *keyboard_state)
     SDL_RenderClear(Game.screen.renderer);
     SDL_RenderCopy(Game.screen.renderer, Game.textures.background, NULL, NULL);
 
-    draw_text(Game.screen.renderer, "NetPong", SCREEN_WIDTH / 3, 30, 5);
+    draw_text(Game.screen.renderer, "SimplePong", SCREEN_WIDTH / 3, 30, 5);
 
     draw_text(Game.screen.renderer, "Start", option_align, start_y, MENU_OPTION_TEXT_SCALE);
     draw_text(Game.screen.renderer, "Controls", option_align, controls_y, MENU_OPTION_TEXT_SCALE);

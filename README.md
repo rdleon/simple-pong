@@ -7,7 +7,7 @@ You will need a C compiler SDL2 and SDL2 image extension.
 `$ apt install build-essential libsdl2-dev libsdl2-image-dev`
 
 
-# Netpong Roadmap
+# Simple Pong Roadmap
 
 ## Version 1
 
@@ -34,9 +34,3 @@ this it is sent to the one who just scored.
     + Set Menu option for 2 player vs.
     + Set Options for player 2 controls
 5. Update README
-
-## Version 3
-
-1. Online Server
-2. Server lobby
-3. Online multiplayer

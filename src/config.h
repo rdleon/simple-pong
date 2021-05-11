@@ -1,7 +1,7 @@
 #ifndef CONFIG_H
 #define CONFIG_H
 
-#define SCREEN_NAME "NetPong"
+#define SCREEN_NAME "SimplePong"
 #define SCREEN_WIDTH 800
 #define SCREEN_HEIGHT 600
 #define FRAMES_PER_SECOND 60

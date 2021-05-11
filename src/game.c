@@ -246,7 +246,7 @@ void game_init()
 
     init_images();
 
-    Game.screen.window = SDL_CreateWindow("NetPong",
+    Game.screen.window = SDL_CreateWindow("SimplePong",
             SDL_WINDOWPOS_UNDEFINED,
             SDL_WINDOWPOS_UNDEFINED,
             Game.screen.width,
