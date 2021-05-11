@@ -1,6 +1,6 @@
 # executable
-netpong
-netpong.dSYM/
+simplepong
+simplepong.dSYM/
 
 #editor
 *.swp

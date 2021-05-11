@@ -3,9 +3,9 @@ CFLAGS=-pipe -O2 -std=c11 -Wall -Wextra
 LDFLAGS=-I. -lm $(shell pkg-config --cflags --libs sdl2 SDL2_image)
 
 DEPS = src/images.h src/fonts.h src/game.h src/config.h src/menu.h
-OBJ = src/netpong.o src/images.o src/fonts.o src/game.o src/menu.o
+OBJ = src/simplepong.o src/images.o src/fonts.o src/game.o src/menu.o
 
-EXECUTABLES=netpong
+EXECUTABLES=simplepong
 
 all: $(EXECUTABLES)
 
@@ -15,7 +15,7 @@ debug: $(EXECUTABLES)
 %.o: %.c $(DEPS)
 	$(CC) -c -o $@ $< $(CFLAGS) $(LDFLAGS)
 
-netpong: $(OBJ)
+simplepong: $(OBJ)
 	$(CC) -o $@ $^ $(CFLAGS) $(LDFLAGS)
 
 clean:
