@@ -1,14 +1,4 @@
-#include "config.h"
-#include "menu.h"
-#include "game.h"
-#include "fonts.h"
-#include "config_controls.h"
-
-#include <stdlib.h>
-#include <time.h>
-
-#include "SDL2/SDL.h"
-#include "SDL2/SDL_image.h"
+#include "simplepong.h"
 
 #define SDL_MAIN_HANDLED
 

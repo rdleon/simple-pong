@@ -1,6 +1,4 @@
-#include "game.h"
-#include "images.h"
-#include "fonts.h"
+#include "simplepong.h"
 
 struct game Game = {
     Menu,

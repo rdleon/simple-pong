@@ -1,10 +1,7 @@
 #ifndef CONFIG_CONTROLS_H
 #define CONFIG_CONTROLS_H
 
-#include "game.h"
-#include "fonts.h"
-
-#include "SDL2/SDL.h"
+#include "simplepong.h"
 
 void menu_controls_loop(const Uint8 *);
 

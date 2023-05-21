@@ -1,6 +1,4 @@
-#include "menu.h"
-#include "config.h"
-#include "config_controls.h"
+#include "simplepong.h"
 
 extern struct game Game;
 

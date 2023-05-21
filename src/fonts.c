@@ -1,4 +1,4 @@
-#include "fonts.h"
+#include "simplepong.h"
 
 #define FONT_HEIGHT 16;
 

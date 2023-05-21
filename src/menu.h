@@ -1,11 +1,7 @@
 #ifndef MENU_H
 #define MENU_H
 
-#include "config.h"
-#include "game.h"
-#include "fonts.h"
-
-#include "SDL2/SDL.h"
+#include "simplepong.h"
 
 enum menu_option {MenuStart, MenuControls, MenuQuit};
 
