@@ -29,9 +29,12 @@ struct ball {
     int8_t speed;
 };
 
+struct controls {};
+
 struct player {
     SDL_Rect rect;
     uint8_t score;
+    struct controls controls;
 };
 
 enum game_state {Menu, Controls, Running, Quit};

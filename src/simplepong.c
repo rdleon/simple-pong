@@ -2,6 +2,7 @@
 #include "menu.h"
 #include "game.h"
 #include "fonts.h"
+#include "config_controls.h"
 
 #include <stdlib.h>
 #include <time.h>
