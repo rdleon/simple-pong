@@ -9,6 +9,7 @@
 
 #include "SDL2/SDL.h"
 #include "SDL2/SDL_image.h"
+#include "SDL2/SDL_mixer.h"
 
 #ifndef M_PI
 #define M_PI 3.14159
@@ -56,6 +57,12 @@ struct game {
         SDL_Texture *ball;
         SDL_Texture *paddle;
     } textures;
+
+    struct {
+        Mix_Chunk *wallbounce;
+        Mix_Chunk *paddlebounce;
+        Mix_Chunk *scorepoint;
+    } sounds;
 
     SDL_Rect cursor;
     struct ball ball;
