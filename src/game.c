@@ -1,5 +1,6 @@
 #include "game.h"
 #include "images.h"
+#include "sounds.h"
 #include "fonts.h"
 
 struct game Game = {
@@ -17,6 +18,13 @@ struct game Game = {
         NULL,
         NULL,
     },
+    
+    {
+        NULL,
+        NULL,
+        NULL,
+    },
+
 
     // Cursor
     {
@@ -117,9 +125,17 @@ void check_collisions(struct player* p1, struct player* p2, struct ball* ball)
     SDL_bool c2 = SDL_HasIntersection(&(ball->rect), &(p2->rect));
 
     if (ball->rect.x < 0) {
+
+        //play sound
+        Mix_PlayChannel( -1, Game.sounds.scorepoint, 0 );
+
         p2->score++;
         reset_ball(&(ball->rect), &(ball->speed), &angle, 1);
     } else if(ball->rect.x > (int)(Game.screen.width - ball->rect.w)) {
+        
+        //play sound
+        Mix_PlayChannel( -1, Game.sounds.scorepoint, 0 );
+
         // Change for stop win game
         p1->score++;
         reset_ball(&(ball->rect), &(ball->speed), &angle, -1);
@@ -133,6 +149,10 @@ void check_collisions(struct player* p1, struct player* p2, struct ball* ball)
             ball->speed *= -1;
         }
         angle = calculate_angle(&(p1->rect), &(ball->rect));
+        
+        //play sound
+        Mix_PlayChannel( -1, Game.sounds.paddlebounce, 0 );
+
     } else if (c2) {
         if (ball->speed > 0) {
             if (ball->speed < INT8_MAX - 1) {
@@ -141,10 +161,18 @@ void check_collisions(struct player* p1, struct player* p2, struct ball* ball)
             ball->speed *= -1;
         }
         angle = calculate_angle(&(p2->rect), &(ball->rect));
+        
+        //play sound
+        Mix_PlayChannel( -1, Game.sounds.paddlebounce, 0 );
+
     }
 
     if (ball->rect.y < 0 || ball->rect.y > (int)(Game.screen.height - ball->rect.h)) {
         angle *= -1;
+        
+        //play sound
+        Mix_PlayChannel( -1, Game.sounds.wallbounce, 0 );
+
     }
 
     if (angle == 0) {
@@ -221,6 +249,14 @@ void init_images()
     }
 }
 
+void init_sounds()
+{
+   if ( Mix_OpenAudio( 44100, MIX_DEFAULT_FORMAT, 2, 1024 ) < 0 ) {
+		fprintf(stderr, "Error initializing SDL_mixer: -> %s\n", Mix_GetError());
+		exit(1);
+	}
+}
+
 void game_reset()
 {
     Game.player1.rect.y = Game.player2.rect.y = CENTER_Y - (PADDLE_HEIGHT / 2);
@@ -245,6 +281,7 @@ void game_init()
     }
 
     init_images();
+    init_sounds();
 
     Game.screen.window = SDL_CreateWindow("SimplePong",
             SDL_WINDOWPOS_UNDEFINED,
@@ -264,6 +301,10 @@ void game_init()
         -1,
         SDL_RENDERER_ACCELERATED|SDL_RENDERER_PRESENTVSYNC
     );
+
+    Game.sounds.wallbounce = Mix_LoadWAV("sounds/wall_bounce.wav");
+    Game.sounds.paddlebounce = Mix_LoadWAV("sounds/paddle_bounce.wav");
+    Game.sounds.scorepoint = Mix_LoadWAV("sounds/score_point.wav");
 
     Game.textures.background = load_image(Game.screen.renderer, "images/court.png");
     Game.textures.ball = load_image(Game.screen.renderer, "images/ball.png");
@@ -349,6 +390,10 @@ void game_quit()
     SDL_DestroyTexture(Game.textures.ball);
     SDL_DestroyTexture(Game.textures.paddle);
 
+    Mix_FreeChunk(Game.sounds.wallbounce);
+    Mix_FreeChunk(Game.sounds.paddlebounce);
+    Mix_FreeChunk(Game.sounds.scorepoint);
+
     if (Game.screen.renderer) {
         SDL_DestroyRenderer(Game.screen.renderer);
     }
@@ -357,6 +402,7 @@ void game_quit()
         SDL_DestroyWindow(Game.screen.window);
     }
 
+    Mix_Quit();
     IMG_Quit();
     SDL_Quit();
 
