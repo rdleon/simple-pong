@@ -1,6 +1,4 @@
-#include "game.h"
-#include "images.h"
-#include "fonts.h"
+#include "simplepong.h"
 
 struct game Game = {
     Menu,
@@ -144,26 +142,22 @@ void check_collisions(struct player* p1, struct player* p2, struct ball* ball)
         if (ball->speed < 0) {
             if (ball->speed > INT8_MIN + 1) {
                 ball->speed -= 1;
+		//play sound
+		Mix_PlayChannel( -1, Game.sounds.paddlebounce, 0 );
             }
             ball->speed *= -1;
         }
         angle = calculate_angle(&(p1->rect), &(ball->rect));
-        
-        //play sound
-        Mix_PlayChannel( -1, Game.sounds.paddlebounce, 0 );
-
     } else if (c2) {
         if (ball->speed > 0) {
             if (ball->speed < INT8_MAX - 1) {
-                ball->speed += 1;
+                ball->speed += 1;	
+		//play sound
+		Mix_PlayChannel( -1, Game.sounds.paddlebounce, 0 );
             }
             ball->speed *= -1;
         }
         angle = calculate_angle(&(p2->rect), &(ball->rect));
-        
-        //play sound
-        Mix_PlayChannel( -1, Game.sounds.paddlebounce, 0 );
-
     }
 
     if (ball->rect.y < 0 || ball->rect.y > (int)(Game.screen.height - ball->rect.h)) {

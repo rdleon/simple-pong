@@ -1,15 +1,7 @@
 #ifndef GAME_H
 #define GAME_H
 
-#include "config.h"
-
-#include <stdio.h>
-#include <stdint.h>
-#include <math.h>
-
-#include "SDL2/SDL.h"
-#include "SDL2/SDL_image.h"
-#include "SDL2/SDL_mixer.h"
+#include "game.h"
 
 #ifndef M_PI
 #define M_PI 3.14159
@@ -30,9 +22,12 @@ struct ball {
     int8_t speed;
 };
 
+struct controls {};
+
 struct player {
     SDL_Rect rect;
     uint8_t score;
+    struct controls controls;
 };
 
 enum game_state {Menu, Controls, Running, Quit};

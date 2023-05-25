@@ -4,7 +4,7 @@ You will need a C compiler SDL2 and SDL2 image extension.
 
 ##  To install dependencies in Debian:
 
-`$ apt install build-essential libsdl2-dev libsdl2-image-dev`
+`$ apt install build-essential libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev`
 
 
 # Simple Pong Roadmap
