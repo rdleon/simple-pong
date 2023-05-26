@@ -7,7 +7,7 @@
 #define FRAMES_PER_SECOND 60
 
 /* Millisecons to wait for debouncing keypresses */
-#define DEBOUNCE_WAIT 200
+#define DEBOUNCE_WAIT 100
 
 #define MAX_TEXT_BUFF_SIZE 100
 

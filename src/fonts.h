@@ -1,7 +1,7 @@
 #ifndef FONTS_H
 #define FONTS_H
 
-#include "images.h"
+#include "simplepong.h"
 
 struct font
 {
