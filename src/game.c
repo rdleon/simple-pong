@@ -66,7 +66,7 @@ struct game Game = {
     },
 
     DEFAULT_MAX_SCORE,
-	0,
+    0,
 };
 
 double rand_range(double min, double max)
@@ -143,8 +143,8 @@ void check_collisions(struct player* p1, struct player* p2, struct ball* ball)
         if (ball->speed < 0) {
             if (ball->speed > INT8_MIN + 1) {
                 ball->speed -= 1;
-		//play sound
-		Mix_PlayChannel( -1, Game.sounds.paddlebounce, 0 );
+        //play sound
+        Mix_PlayChannel( -1, Game.sounds.paddlebounce, 0 );
             }
             ball->speed *= -1;
         }
@@ -152,9 +152,9 @@ void check_collisions(struct player* p1, struct player* p2, struct ball* ball)
     } else if (c2) {
         if (ball->speed > 0) {
             if (ball->speed < INT8_MAX - 1) {
-                ball->speed += 1;	
-		//play sound
-		Mix_PlayChannel( -1, Game.sounds.paddlebounce, 0 );
+                ball->speed += 1;   
+        //play sound
+        Mix_PlayChannel( -1, Game.sounds.paddlebounce, 0 );
             }
             ball->speed *= -1;
         }
@@ -219,25 +219,25 @@ void check_events(const Uint8 *keyboard_state, int *player1_moving, int *player2
     int paddle_speed = BASE_PADDLE_SPEED;
 
     if (keyboard_state[SDL_SCANCODE_Q]) {
-    	Game.state = Menu;
-    	SDL_Delay(DEBOUNCE_WAIT);
-	
-	//reset game when quitting to menu
-	game_reset();
+        Game.state = Menu;
+        SDL_Delay(DEBOUNCE_WAIT);
+    
+    //reset game when quitting to menu
+    game_reset();
     }
 
     *player1_moving = 0;
-	*player2_moving = 0;
+    *player2_moving = 0;
 
-	//check player 1 input
+    //check player 1 input
     if (keyboard_state[SDL_SCANCODE_DOWN]) {
         *player1_moving = paddle_speed;
     }
     else if (keyboard_state[SDL_SCANCODE_UP]) {
         *player1_moving = -paddle_speed;
     }
-	
-	//check player 2 input
+    
+    //check player 2 input
     if (keyboard_state[SDL_SCANCODE_L]) {
         *player2_moving = paddle_speed;
     }
@@ -261,9 +261,9 @@ void init_images()
 void init_sounds()
 {
    if ( Mix_OpenAudio( 44100, MIX_DEFAULT_FORMAT, 2, 1024 ) < 0 ) {
-		fprintf(stderr, "Error initializing SDL_mixer: -> %s\n", Mix_GetError());
-		exit(1);
-	}
+        fprintf(stderr, "Error initializing SDL_mixer: -> %s\n", Mix_GetError());
+        exit(1);
+    }
 }
 
 void game_reset()
@@ -367,29 +367,29 @@ void game_loop(const Uint8 *keyboard_state)
 
     check_collisions(&Game.player1, &Game.player2, &Game.ball);
 
-	//player 1
-	Game.player1.rect.y += player1_moving;
+    //player 1
+    Game.player1.rect.y += player1_moving;
 
     if (Game.player1.rect.y < 0) {
         Game.player1.rect.y = 0;
     } else if (Game.player1.rect.y > (int)(Game.screen.height - Game.player1.rect.h)) {
         Game.player1.rect.y = (int)(Game.screen.height - Game.player1.rect.h);
     }
-	
-	//player 2
-	if (Game.two_players) {    	
-		Game.player2.rect.y += player2_moving;
+    
+    //player 2
+    if (Game.two_players) {     
+        Game.player2.rect.y += player2_moving;
 
-    	if (Game.player2.rect.y < 0) {
-        	Game.player2.rect.y = 0;
-    	} else if (Game.player2.rect.y > (int)(Game.screen.height - Game.player2.rect.h)) {
-        	Game.player2.rect.y = (int)(Game.screen.height - Game.player2.rect.h);
-    	}	
-	//bot player
-	} else {
-		follow_ball(&Game.ball.rect, &Game.player2.rect);
-	}
-	
+        if (Game.player2.rect.y < 0) {
+            Game.player2.rect.y = 0;
+        } else if (Game.player2.rect.y > (int)(Game.screen.height - Game.player2.rect.h)) {
+            Game.player2.rect.y = (int)(Game.screen.height - Game.player2.rect.h);
+        }   
+    //bot player
+    } else {
+        follow_ball(&Game.ball.rect, &Game.player2.rect);
+    }
+    
     SDL_RenderClear(Game.screen.renderer);
     SDL_RenderCopy(Game.screen.renderer, Game.textures.background, NULL, NULL);
     SDL_RenderCopy(Game.screen.renderer, Game.textures.ball, NULL, &Game.ball.rect);
