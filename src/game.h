@@ -33,6 +33,7 @@ struct player {
 enum game_state {Menu, Controls, Running, Quit};
 
 void game_init();
+void game_reset();
 void game_loop(const Uint8 *keyboard_state);
 void game_quit();
 
@@ -65,6 +66,7 @@ struct game {
     struct player player2;
 
     unsigned int max_score;
+    int two_players;
 };
 
 #endif
