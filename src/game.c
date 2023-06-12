@@ -143,8 +143,8 @@ void check_collisions(struct player* p1, struct player* p2, struct ball* ball)
         if (ball->speed < 0) {
             if (ball->speed > INT8_MIN + 1) {
                 ball->speed -= 1;
-        //play sound
-        Mix_PlayChannel( -1, Game.sounds.paddlebounce, 0 );
+                //play sound
+                Mix_PlayChannel( -1, Game.sounds.paddlebounce, 0 );
             }
             ball->speed *= -1;
         }
