@@ -36,7 +36,7 @@ void menu_controls_loop(const Uint8 *keyboard_state)
     if (keyboard_state[SDL_SCANCODE_RETURN] || keyboard_state[SDL_SCANCODE_Q]) {
         Game.state = Menu;
         SDL_Delay(DEBOUNCE_WAIT);
-    } else if (option < (enum control_menu_option) option_heights_count && keyboard_state[SDL_SCANCODE_DOWN]) {
+    } else if (option < (enum control_menu_option) (option_heights_count - 1) && keyboard_state[SDL_SCANCODE_DOWN]) {
         option += 1;
         SDL_Delay(DEBOUNCE_WAIT);
     } else if (option > 0 && keyboard_state[SDL_SCANCODE_UP]) {
