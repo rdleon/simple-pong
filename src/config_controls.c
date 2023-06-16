@@ -26,7 +26,7 @@ void menu_controls_loop(const Uint8 *keyboard_state)
     draw_text(Game.screen.renderer, "O", half_screen, option_heights[2], 2);
     draw_text(Game.screen.renderer, "P2 DOWN:", quarter_screen, option_heights[3], 2);
     draw_text(Game.screen.renderer, "L", half_screen, option_heights[3], 2);
-    draw_text(Game.screen.renderer, "Q: Go back to menu", quarter_screen, option_heights[4], 2);
+    draw_text(Game.screen.renderer, "Go back to main menu", quarter_screen, option_heights[4], 2);
 
     Game.cursor.x = quarter_screen - 40;
     Game.cursor.y = option_heights[option];
