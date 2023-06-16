@@ -56,7 +56,7 @@ void menu_main_loop(const Uint8 *keyboard_state)
     SDL_RenderClear(Game.screen.renderer);
     SDL_RenderCopy(Game.screen.renderer, Game.textures.background, NULL, NULL);
 
-    draw_text(Game.screen.renderer, "SimplePong", SCREEN_WIDTH / 3, 30, 5);
+    draw_text(Game.screen.renderer, "SimplePong", SCREEN_WIDTH / 4, 30, 5);
 
     draw_text(Game.screen.renderer, "Single player", option_align, singleplayer_y, MENU_OPTION_TEXT_SCALE);
     draw_text(Game.screen.renderer, "Two players", option_align, twoplayers_y, MENU_OPTION_TEXT_SCALE);
