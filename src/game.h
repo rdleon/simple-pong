@@ -30,7 +30,7 @@ struct player {
     struct controls controls;
 };
 
-enum game_state {Menu, Controls, Running, Quit};
+enum game_state {Menu, Running, Options, Quit};
 
 void game_init();
 void game_reset();

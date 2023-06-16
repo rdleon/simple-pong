@@ -18,7 +18,7 @@ void menu_main_loop(const Uint8 *keyboard_state)
     int cursor_y = option_position;
 
     enum menu_option up_action = MenuSinglePlayer;
-    enum menu_option down_action = MenuControls;
+    enum menu_option down_action = MenuOptions;
     enum game_state enter_action = Running;
 
     switch (selected) {
@@ -32,19 +32,19 @@ void menu_main_loop(const Uint8 *keyboard_state)
     case MenuTwoPlayers:
         cursor_y = twoplayers_y;
         up_action = MenuSinglePlayer;
-        down_action = MenuControls;
+        down_action = MenuOptions;
         enter_action = Running;
 	Game.two_players = 1;
         break;
-    case MenuControls:
+    case MenuOptions:
         cursor_y = controls_y;
         up_action = MenuTwoPlayers;
         down_action = MenuQuit;
-        enter_action = Controls;
+        enter_action = Options;
         break;
     case MenuQuit:
         cursor_y = quit_y;
-        up_action = MenuControls;
+        up_action = MenuOptions;
         down_action = MenuQuit;
         enter_action = Quit;
         break;
@@ -60,7 +60,7 @@ void menu_main_loop(const Uint8 *keyboard_state)
 
     draw_text(Game.screen.renderer, "Single player", option_align, singleplayer_y, MENU_OPTION_TEXT_SCALE);
     draw_text(Game.screen.renderer, "Two players", option_align, twoplayers_y, MENU_OPTION_TEXT_SCALE);
-    draw_text(Game.screen.renderer, "Controls", option_align, controls_y, MENU_OPTION_TEXT_SCALE);
+    draw_text(Game.screen.renderer, "Options", option_align, controls_y, MENU_OPTION_TEXT_SCALE);
     draw_text(Game.screen.renderer, "Quit", option_align, quit_y, MENU_OPTION_TEXT_SCALE);
 
     SDL_RenderCopy(Game.screen.renderer, Game.textures.ball, NULL, &Game.cursor);

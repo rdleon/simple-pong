@@ -7,7 +7,7 @@ void menu_controls_loop(const Uint8 *keyboard_state)
     SDL_RenderClear(Game.screen.renderer);
     SDL_RenderCopy(Game.screen.renderer, Game.textures.background, NULL, NULL);
 
-    draw_text(Game.screen.renderer, "Controls", SCREEN_WIDTH / 3, 30, 5);
+    draw_text(Game.screen.renderer, "Configuration", SCREEN_WIDTH / 3, 30, 5);
 
     draw_text(Game.screen.renderer, "UP: Move up", SCREEN_WIDTH / 4, 160, 3);
     draw_text(Game.screen.renderer, "DOWN: Move down", SCREEN_WIDTH / 4, 230, 3);
