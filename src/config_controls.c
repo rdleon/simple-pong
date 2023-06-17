@@ -6,7 +6,7 @@ enum control_menu_option {SetP1Up, SetP1Down, SetP2Up, SetP2Down, QuitConfig};
 int option_heights[] = {160, 200, 280, 320, 400};
 int option_heights_count = 5;
 
-int is_permitted_key(SDL_Scancode key, SDL_Scancode old_key)
+int is_permitted_key(SDL_Scancode key)
 {
     int is_valid = 1;
 
@@ -19,11 +19,6 @@ int is_permitted_key(SDL_Scancode key, SDL_Scancode old_key)
         Game.player2.controls.down
     };
     int forbidden_len = sizeof forbidden / sizeof forbidden[0];
-
-    if (key == old_key) {
-        return is_valid;
-    }
-
 
     for (int i = 0; i < forbidden_len; i++) {
         if (forbidden[i] == key) {
@@ -53,7 +48,7 @@ SDL_Scancode get_pressed_key(SDL_Scancode original_key)
         }
     }
 
-    if (!is_permitted_key(pressed_key, original_key)) {
+    if (!is_permitted_key(pressed_key)) {
         return original_key;
     }
 
