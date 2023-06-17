@@ -22,7 +22,10 @@ struct ball {
     int8_t speed;
 };
 
-struct controls {};
+struct controls {
+    SDL_Scancode up;
+    SDL_Scancode down;
+};
 
 struct player {
     SDL_Rect rect;
@@ -30,7 +33,7 @@ struct player {
     struct controls controls;
 };
 
-enum game_state {Menu, Controls, Running, Quit};
+enum game_state {Menu, Running, Options, Quit};
 
 void game_init();
 void game_reset();

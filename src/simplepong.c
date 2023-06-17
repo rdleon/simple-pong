@@ -35,7 +35,7 @@ int main()
         case Menu:
             menu_main_loop(keyboard_state);
             break;
-        case Controls:
+        case Options:
             menu_controls_loop(keyboard_state);
             break;
         case Running:
