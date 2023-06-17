@@ -51,7 +51,11 @@ struct game Game = {
             PADDLE_WIDTH,
             PADDLE_HEIGHT
         },
-        0
+        0,
+		{
+			SDL_SCANCODE_UP,
+			SDL_SCANCODE_DOWN
+		}
     },
 
     // Player 2
@@ -62,7 +66,11 @@ struct game Game = {
             PADDLE_WIDTH,
             PADDLE_HEIGHT
         },
-        0
+        0,
+		{
+			SDL_SCANCODE_Q,
+			SDL_SCANCODE_A
+		}
     },
 
     DEFAULT_MAX_SCORE,
@@ -230,18 +238,18 @@ void check_events(const Uint8 *keyboard_state, int *player1_moving, int *player2
     *player2_moving = 0;
 
     //check player 1 input
-    if (keyboard_state[SDL_SCANCODE_DOWN]) {
+    if (keyboard_state[Game.player1.controls.down]) {
         *player1_moving = paddle_speed;
     }
-    else if (keyboard_state[SDL_SCANCODE_UP]) {
+    else if (keyboard_state[Game.player1.controls.up]) {
         *player1_moving = -paddle_speed;
     }
     
     //check player 2 input
-    if (keyboard_state[SDL_SCANCODE_L]) {
+    if (keyboard_state[Game.player2.controls.down]) {
         *player2_moving = paddle_speed;
     }
-    else if (keyboard_state[SDL_SCANCODE_O]) {
+    else if (keyboard_state[Game.player2.controls.up]) {
         *player2_moving = -paddle_speed;
     }
 

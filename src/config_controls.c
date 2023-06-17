@@ -10,6 +10,12 @@ void menu_controls_loop(const Uint8 *keyboard_state)
 {
 	static enum control_menu_option option = SetP1Up;
 
+	const char *player1_up = SDL_GetScancodeName(Game.player1.controls.up);
+	const char *player1_down = SDL_GetScancodeName(Game.player1.controls.down);
+
+	const char *player2_up = SDL_GetScancodeName(Game.player2.controls.up);
+	const char *player2_down = SDL_GetScancodeName(Game.player2.controls.down);
+
     int quarter_screen = SCREEN_WIDTH / 4;
     int half_screen = SCREEN_WIDTH / 2;
 
@@ -19,14 +25,14 @@ void menu_controls_loop(const Uint8 *keyboard_state)
     draw_text(Game.screen.renderer, "Configuration", SCREEN_WIDTH / 5, 30, 5);
 
     draw_text(Game.screen.renderer, "P1 UP:", quarter_screen, option_heights[0], 2);
-    draw_text(Game.screen.renderer, "Arrow UP", half_screen, option_heights[0], 2);
+    draw_text(Game.screen.renderer, (char*) player1_up, half_screen, option_heights[0], 2);
     draw_text(Game.screen.renderer, "P1 DOWN:", quarter_screen, option_heights[1], 2);
-    draw_text(Game.screen.renderer, "Arrow DOWN", half_screen, option_heights[1], 2);
+    draw_text(Game.screen.renderer, (char*) player1_down, half_screen, option_heights[1], 2);
 
     draw_text(Game.screen.renderer, "P2 UP:", quarter_screen, option_heights[2], 2);
-    draw_text(Game.screen.renderer, "O", half_screen, option_heights[2], 2);
+    draw_text(Game.screen.renderer, (char *) player2_up, half_screen, option_heights[2], 2);
     draw_text(Game.screen.renderer, "P2 DOWN:", quarter_screen, option_heights[3], 2);
-    draw_text(Game.screen.renderer, "L", half_screen, option_heights[3], 2);
+    draw_text(Game.screen.renderer, (char *) player2_down, half_screen, option_heights[3], 2);
 
     draw_text(Game.screen.renderer, "Go back to main menu (ESC)", quarter_screen, option_heights[4], 2);
 

@@ -22,7 +22,10 @@ struct ball {
     int8_t speed;
 };
 
-struct controls {};
+struct controls {
+	SDL_Scancode up;
+	SDL_Scancode down;
+};
 
 struct player {
     SDL_Rect rect;
