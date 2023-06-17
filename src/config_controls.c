@@ -109,6 +109,7 @@ void menu_controls_loop(const Uint8 *keyboard_state)
             break;
         }
         setting_control = 0;
+        SDL_Delay(DEBOUNCE_WAIT);
     } else if (keyboard_state[SDL_SCANCODE_RETURN]) {
         switch(option) {
         case SetP1Up:
