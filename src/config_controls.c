@@ -97,15 +97,25 @@ void menu_controls_loop(const Uint8 *keyboard_state)
             Game.player1.controls.up = get_pressed_key(Game.player1.controls.up);
             break;
         case SetP1Down:
-            Game.player1.controls.up = get_pressed_key(Game.player1.controls.up);
+            Game.player1.controls.down = get_pressed_key(Game.player1.controls.down);
+            break;
+        case SetP2Up:
+            Game.player2.controls.up = get_pressed_key(Game.player2.controls.up);
+            break;
+        case SetP2Down:
+            Game.player2.controls.down = get_pressed_key(Game.player2.controls.down);
             break;
         default:
             break;
         }
         setting_control = 0;
+        SDL_Delay(DEBOUNCE_WAIT);
     } else if (keyboard_state[SDL_SCANCODE_RETURN]) {
         switch(option) {
         case SetP1Up:
+        case SetP1Down:
+        case SetP2Up:
+        case SetP2Down:
             setting_control = 1;
             break;
         case QuitConfig:
