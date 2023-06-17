@@ -218,7 +218,7 @@ void check_events(const Uint8 *keyboard_state, int *player1_moving, int *player2
 {
     int paddle_speed = BASE_PADDLE_SPEED;
 
-    if (keyboard_state[SDL_SCANCODE_Q]) {
+    if (keyboard_state[SDL_SCANCODE_ESCAPE]) {
         Game.state = Menu;
         SDL_Delay(DEBOUNCE_WAIT);
     

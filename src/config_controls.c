@@ -22,18 +22,27 @@ void menu_controls_loop(const Uint8 *keyboard_state)
     draw_text(Game.screen.renderer, "Arrow UP", half_screen, option_heights[0], 2);
     draw_text(Game.screen.renderer, "P1 DOWN:", quarter_screen, option_heights[1], 2);
     draw_text(Game.screen.renderer, "Arrow DOWN", half_screen, option_heights[1], 2);
+
     draw_text(Game.screen.renderer, "P2 UP:", quarter_screen, option_heights[2], 2);
     draw_text(Game.screen.renderer, "O", half_screen, option_heights[2], 2);
     draw_text(Game.screen.renderer, "P2 DOWN:", quarter_screen, option_heights[3], 2);
     draw_text(Game.screen.renderer, "L", half_screen, option_heights[3], 2);
-    draw_text(Game.screen.renderer, "Go back to main menu", quarter_screen, option_heights[4], 2);
+
+    draw_text(Game.screen.renderer, "Go back to main menu (ESC)", quarter_screen, option_heights[4], 2);
 
     Game.cursor.x = quarter_screen - 40;
     Game.cursor.y = option_heights[option];
 
     SDL_RenderCopy(Game.screen.renderer, Game.textures.ball, NULL, &Game.cursor);
 
-    if (keyboard_state[SDL_SCANCODE_RETURN] || keyboard_state[SDL_SCANCODE_Q]) {
+    if (keyboard_state[SDL_SCANCODE_RETURN]) {
+		switch(option) {
+		case QuitConfig:
+		default:
+			Game.state = Menu;
+		}
+        SDL_Delay(DEBOUNCE_WAIT);
+	} else if (keyboard_state[SDL_SCANCODE_ESCAPE]) {
         Game.state = Menu;
         SDL_Delay(DEBOUNCE_WAIT);
     } else if (option < (enum control_menu_option) (option_heights_count - 1) && keyboard_state[SDL_SCANCODE_DOWN]) {
