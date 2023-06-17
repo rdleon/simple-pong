@@ -23,8 +23,8 @@ struct ball {
 };
 
 struct controls {
-	SDL_Scancode up;
-	SDL_Scancode down;
+    SDL_Scancode up;
+    SDL_Scancode down;
 };
 
 struct player {

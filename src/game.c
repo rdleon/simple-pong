@@ -52,10 +52,10 @@ struct game Game = {
             PADDLE_HEIGHT
         },
         0,
-		{
-			SDL_SCANCODE_UP,
-			SDL_SCANCODE_DOWN
-		}
+        {
+            SDL_SCANCODE_UP,
+            SDL_SCANCODE_DOWN
+        }
     },
 
     // Player 2
@@ -67,10 +67,10 @@ struct game Game = {
             PADDLE_HEIGHT
         },
         0,
-		{
-			SDL_SCANCODE_Q,
-			SDL_SCANCODE_A
-		}
+        {
+            SDL_SCANCODE_Q,
+            SDL_SCANCODE_A
+        }
     },
 
     DEFAULT_MAX_SCORE,
