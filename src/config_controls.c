@@ -60,11 +60,8 @@ SDL_Scancode get_pressed_key(SDL_Scancode original_key)
     return pressed_key;
 }
 
-void menu_controls_loop(const Uint8 *keyboard_state)
+void render_options_menu(enum control_menu_option option, int setting_control)
 {
-    static enum control_menu_option option = SetP1Up;
-    static int setting_control = 0;
-
     const char *player1_up = SDL_GetScancodeName(Game.player1.controls.up);
     const char *player1_down = SDL_GetScancodeName(Game.player1.controls.down);
 
@@ -78,16 +75,34 @@ void menu_controls_loop(const Uint8 *keyboard_state)
     SDL_RenderCopy(Game.screen.renderer, Game.textures.background, NULL, NULL);
 
     draw_text(Game.screen.renderer, "Configuration", SCREEN_WIDTH / 5, 30, 5);
-
+   
     draw_text(Game.screen.renderer, "P1 UP:", quarter_screen, option_heights[0], 2);
-    draw_text(Game.screen.renderer, (char*) player1_up, half_screen, option_heights[0], 2);
-    draw_text(Game.screen.renderer, "P1 DOWN:", quarter_screen, option_heights[1], 2);
-    draw_text(Game.screen.renderer, (char*) player1_down, half_screen, option_heights[1], 2);
+    if (option == SetP1Up && setting_control == 1) { 
+        draw_text(Game.screen.renderer, "Enter new key", half_screen, option_heights[0], 2);
+    } else{
+        draw_text(Game.screen.renderer, (char*) player1_up, half_screen, option_heights[0], 2);
+    }
+
+    draw_text(Game.screen.renderer, "P1 DOWN:", quarter_screen, option_heights[1], 2);  
+    if (option == SetP1Down && setting_control == 1) {
+        draw_text(Game.screen.renderer, "Enter new key", half_screen, option_heights[1], 2);
+    } else {
+       draw_text(Game.screen.renderer, (char*) player1_down, half_screen, option_heights[1], 2); 
+    }
 
     draw_text(Game.screen.renderer, "P2 UP:", quarter_screen, option_heights[2], 2);
-    draw_text(Game.screen.renderer, (char *) player2_up, half_screen, option_heights[2], 2);
+    if(option == SetP2Up && setting_control == 1) {
+        draw_text(Game.screen.renderer, "Enter new key", half_screen, option_heights[2], 2);
+    } else {
+         draw_text(Game.screen.renderer, (char *) player2_up, half_screen, option_heights[2], 2);
+    }
+
     draw_text(Game.screen.renderer, "P2 DOWN:", quarter_screen, option_heights[3], 2);
-    draw_text(Game.screen.renderer, (char *) player2_down, half_screen, option_heights[3], 2);
+    if(option == SetP2Down && setting_control == 1) {
+        draw_text(Game.screen.renderer, "Enter new key", half_screen, option_heights[3], 2);
+    } else {
+        draw_text(Game.screen.renderer, (char *) player2_down, half_screen, option_heights[3], 2);
+    }
 
     draw_text(Game.screen.renderer, "Go back to main menu (ESC)", quarter_screen, option_heights[4], 2);
 
@@ -95,6 +110,14 @@ void menu_controls_loop(const Uint8 *keyboard_state)
     Game.cursor.y = option_heights[option];
 
     SDL_RenderCopy(Game.screen.renderer, Game.textures.ball, NULL, &Game.cursor);
+}
+
+void menu_controls_loop(const Uint8 *keyboard_state)
+{
+    static enum control_menu_option option = SetP1Up;
+    static int setting_control = 0;
+
+    render_options_menu(option, setting_control); 
 
     if (setting_control == 1) {
         switch(option) {
@@ -122,6 +145,7 @@ void menu_controls_loop(const Uint8 *keyboard_state)
         case SetP2Up:
         case SetP2Down:
             setting_control = 1;
+            render_options_menu(option, setting_control);
             break;
         case QuitConfig:
         default:
