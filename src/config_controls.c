@@ -43,6 +43,11 @@ SDL_Scancode get_pressed_key(SDL_Scancode original_key)
             pressed_key = event.key.keysym.scancode;
             got_key = 1;
             break;
+        case SDL_QUIT:
+            Game.state = Quit;
+            got_key = 1;
+            return original_key;
+            break;
         default:
             break;
         }
