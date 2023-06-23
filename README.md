@@ -21,4 +21,4 @@ You will need a C compiler SDL2 and SDL2 image extension.
 ## Assets
 
 - [Font](https://opengameart.org/content/good-neighbors-pixel-font)
-- [Sprites]()
+- [Assets](https://opengameart.org/content/pong-programmer-art)
