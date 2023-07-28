@@ -1,36 +1,27 @@
-# Development requirements
+# Simple Pong
+
+A pong clone, made to practice game development with C and SDL2.
+
+![pong](https://github.com/rdleon/simple-pong/assets/289059/2f6a4398-eadd-419c-a14a-7f6929fd1d77)
+
+
+## Development
 
 You will need a C compiler SDL2 and SDL2 image extension.
 
-##  To install dependencies in Debian:
+##  To install dependencies in Click the “Commit changes” button to save the image.Click the “Commit changes” button to save the image.Debian:
 
 `$ apt install build-essential libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev`
 
+## Build the project
 
-# Simple Pong Roadmap
+`$ make`
 
-## Version 1
+## Run the game
 
-1. Limit frame rate to 60FPS (Done.)
-2. IA Player
-    Predict where it must be to bounce the ball
-3. Show the game score on the screen. (Done)
-    [font](https://opengameart.org/content/good-neighbors-pixel-font)
-4. End game when a max score is achieved
-5. At the start of the game the ball is randomly served to one side, after
-this it is sent to the one who just scored.
-6. Add a menu
-    + Start Game
-    + View Controls
-    + Exit
-7. Update README
+`$ ./simplepong`
 
-## Version 2
+## Assets
 
-1. Add Options to the menu: Configure Controls and Maximum score
-2. Set the angle of the ball depending of the movement and angle of the paddle
-3. Add sound when hitting and scoring
-4. Add a second player
-    + Set Menu option for 2 player vs.
-    + Set Options for player 2 controls
-5. Update README
+- [Font](https://opengameart.org/content/good-neighbors-pixel-font)
+- [Assets](https://opengameart.org/content/pong-programmer-art)
